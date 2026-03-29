@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../components/BaseLayout.astro';
+import { getSingleton, sortByOrder } from '../lib/content';
+import { buildOrganizationSchema, withTitleTemplate } from '../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const caseStudies = sortByOrder(await getCollection('caseStudies'));
+const testimonials = sortByOrder(
+  (await getCollection('testimonials')).filter((testimonial) => !testimonial.data.draft),
+);
+const title = withTitleTemplate('Portfolio', seo.titleTemplate);
+const description = 'Selected event marketing and brand experience work led by Cake Marketing Collective.';
+const schemas = [buildOrganizationSchema(settings)];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/portfolio"
+  ogImage={seo.defaultOgImage}
+  keywords={seo.fallbackKeywords}
+  schemas={schemas}
+  settings={settings}
+>
+  <section class="page-hero">
+    <div class="page-hero-copy">
+      <p class="eyebrow">Portfolio</p>
+      <h1>Proof of taste, clarity, and atmosphere.</h1>
+      <p class="hero-body">
+        The portfolio is structured to grow as the Squarespace export and approved visuals
+        arrive. For launch, LinkFest anchors the story and the page leaves room for new case
+        studies without redesign.
+      </p>
+    </div>
+    <div class="page-hero-visual">
+      <div class="status-panel">
+        <p class="eyebrow">Migration status</p>
+        <h2>Additional stories are queued.</h2>
+        <p>
+          Squarespace remains the source for archived metadata, visual assets, and any approved
+          legacy copy that should be migrated into future case studies.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="case-grid">
+      {caseStudies.map((caseStudy) => (
+        <article class="case-card">
+          <img src={caseStudy.data.image} alt={`${caseStudy.data.title} placeholder artwork`} />
+          <p class="eyebrow">{caseStudy.data.timeframe}</p>
+          <h2>{caseStudy.data.title}</h2>
+          <p>{caseStudy.data.summary}</p>
+          <p><strong>Challenge:</strong> {caseStudy.data.challenge}</p>
+          <p><strong>Response:</strong> {caseStudy.data.response}</p>
+          <p><strong>Outcome:</strong> {caseStudy.data.outcome}</p>
+          <div class="metric-list">
+            {caseStudy.data.metrics.map((metric) => (
+              <span class="metric-pill">{metric.label}: {metric.value}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-card">
+      <p class="eyebrow">Testimonials</p>
+      <h2>Client language will be added once approved.</h2>
+      {testimonials.length > 0 ? (
+        <div class="case-grid">
+          {testimonials.map((testimonial) => (
+            <article class="case-card">
+              <p>"{testimonial.data.quote}"</p>
+              <p><strong>{testimonial.data.name}</strong></p>
+              <p>{testimonial.data.role}, {testimonial.data.company}</p>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p>
+            No client quotes are published in this repo yet. The page is intentionally built to
+            accept approved testimonials later without layout changes.
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

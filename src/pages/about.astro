@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { getSingleton } from '../lib/content';
+import {
+  buildOrganizationSchema,
+  buildPersonSchema,
+  withTitleTemplate,
+} from '../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const founder = (await getSingleton('founder')).data;
+const title = withTitleTemplate('About Cake Douglas', seo.titleTemplate);
+const description = founder.summary;
+const schemas = [buildOrganizationSchema(settings), buildPersonSchema(founder)];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/about"
+  ogImage={founder.image}
+  keywords={seo.fallbackKeywords}
+  schemas={schemas}
+  settings={settings}
+>
+  <section class="page-hero">
+    <div class="page-hero-copy">
+      <p class="eyebrow">Meet the founder</p>
+      <h1>{founder.name}</h1>
+      <p class="hero-body">{founder.title} rooted in {founder.location}.</p>
+      <p>{founder.summary}</p>
+    </div>
+    <div class="page-hero-visual">
+      <img class="founder-portrait" src={founder.image} alt={`Portrait placeholder for ${founder.name}`} />
+      <p>{founder.photoCredit ? `Photo credit placeholder: ${founder.photoCredit}` : 'Approved portrait pending export from Squarespace.'}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card">
+        <p class="eyebrow">Philosophy</p>
+        <h2>Events should carry a pulse.</h2>
+        <p>{founder.philosophy}</p>
+        <p>{founder.signature}</p>
+      </article>
+      <article class="section-card">
+        <p class="eyebrow">Background</p>
+        <h2>Culture, policy, art, and people-power.</h2>
+        <ul>
+          {founder.highlights.map((highlight) => <li>{highlight}</li>)}
+        </ul>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

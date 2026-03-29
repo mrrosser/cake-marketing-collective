@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { getSingleton } from '../lib/content';
+import { buildOrganizationSchema, withTitleTemplate } from '../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const title = withTitleTemplate('Terms', seo.titleTemplate);
+const description = 'Placeholder terms for Cake Marketing Collective pending final legal copy.';
+const schemas = [buildOrganizationSchema(settings)];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/terms"
+  ogImage={seo.defaultOgImage}
+  keywords={seo.fallbackKeywords}
+  schemas={schemas}
+  settings={settings}
+>
+  <section class="section">
+    <div class="section-card">
+      <p class="eyebrow">Terms</p>
+      <h1>Terms placeholder</h1>
+      <p>
+        Final terms and conditions are still pending. Replace this page with approved language
+        before production launch, especially if client work, deposits, scheduling, or digital
+        deliverables are governed through the website.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

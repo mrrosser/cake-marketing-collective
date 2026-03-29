@@ -1,0 +1,41 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = 'Brand System' } = Astro.props;
+---
+
+<section class="brand-system">
+  <div>
+    <p class="eyebrow">{title}</p>
+    <h2>Designed to feel cinematic, not corporate.</h2>
+    <p>
+      The visual language stays rooted in black, cream, and violet tones with a signature
+      script lockup, serif-led hierarchy, and clean sans accents for contrast.
+    </p>
+  </div>
+  <div class="brand-samples">
+    <div class="swatch-card">
+      <span class="swatch swatch-primary"></span>
+      <div>
+        <strong>#954CF6</strong>
+        <p>Primary accent for motion, focus, and high-importance actions.</p>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <span class="swatch swatch-secondary"></span>
+      <div>
+        <strong>#CB6CE6</strong>
+        <p>Supporting accent for glow, lines, and secondary highlights.</p>
+      </div>
+    </div>
+    <div class="signature-sample">
+      <span>Cake</span>
+      <small>
+        The supplied logo lockup is live on the site, with the typography stack ready for
+        licensed webfont drop-ins if those files arrive later.
+      </small>
+    </div>
+  </div>
+</section>

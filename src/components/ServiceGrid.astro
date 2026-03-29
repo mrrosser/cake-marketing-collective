@@ -1,0 +1,32 @@
+---
+interface ServiceItem {
+  id: string;
+  data: {
+    title: string;
+    summary: string;
+    detail: string;
+    deliverables: string[];
+    accent: string;
+  };
+}
+
+interface Props {
+  services: ServiceItem[];
+}
+
+const { services } = Astro.props;
+---
+
+<div class="service-grid">
+  {services.map((service) => (
+    <article class:list={['service-card', service.data.accent === 'secondary' ? 'secondary' : 'primary']}>
+      <p class="eyebrow">Service</p>
+      <h3>{service.data.title}</h3>
+      <p>{service.data.summary}</p>
+      <p class="service-detail">{service.data.detail}</p>
+      <ul>
+        {service.data.deliverables.map((item) => <li>{item}</li>)}
+      </ul>
+    </article>
+  ))}
+</div>

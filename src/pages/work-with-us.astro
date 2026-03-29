@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { getSingleton } from '../lib/content';
+import { buildOrganizationSchema, withTitleTemplate } from '../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const title = withTitleTemplate('Work With Us', seo.titleTemplate);
+const description = 'Start the intake process, review the current status of the Google Form, and book a discovery call with Cake Marketing Collective.';
+const formIsLive = settings.formStatus === 'live' && Boolean(settings.formUrl);
+const schemas = [buildOrganizationSchema(settings)];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/work-with-us"
+  ogImage={seo.defaultOgImage}
+  keywords={seo.serviceKeywords}
+  schemas={schemas}
+  settings={settings}
+>
+  <section class="page-hero">
+    <div class="page-hero-copy">
+      <p class="eyebrow">Work with us</p>
+      <h1>Two steps, one clear next move.</h1>
+      <p class="hero-body">
+        Start by sharing what you are building. Then lock in the discovery call so the strategy,
+        the room, and the partner story can start taking shape together.
+      </p>
+    </div>
+    <div class="page-hero-visual">
+      <div class="status-panel">
+        <p class="eyebrow">Current intake status</p>
+        <div class="status-note">{formIsLive ? 'Form is live' : 'Public form link pending'}</div>
+        <p>
+          The intake form and booking experience are both public. The branded confirmation-email
+          workflow is scaffolded in this repo and can be activated by binding the Apps Script to
+          the form owner account.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="cta-panel">
+        <p class="eyebrow">Step 1</p>
+        <h2>Share the project.</h2>
+        <p>
+          Use the intake form to outline the event, the timeline, the kind of support you need,
+          and any sponsor or audience context that should shape the work.
+        </p>
+        {formIsLive ? (
+          <a class="button" href={settings.formUrl} target="_blank" rel="noreferrer">
+            Open intake form
+          </a>
+        ) : (
+          <div class="empty-state">
+            <p>
+              If the form is ever unpublished, inquiries can still route through email while the
+              booking CTA stays live.
+            </p>
+            <a class="button button-ghost" href={`mailto:${settings.email}?subject=Cake Marketing inquiry`}>
+              Email Cake Marketing
+            </a>
+          </div>
+        )}
+      </article>
+
+      <article class="cta-panel">
+        <p class="eyebrow">Step 2</p>
+        <h2>Book the discovery call.</h2>
+        <p>
+          The verified public schedule is already active and routes guests into a 15-minute
+          discovery call with Google Meet details added after booking.
+        </p>
+        <a class="button" href={settings.bookingUrl} target="_blank" rel="noreferrer">
+          Book discovery call
+        </a>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

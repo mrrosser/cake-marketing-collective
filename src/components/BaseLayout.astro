@@ -1,0 +1,71 @@
+---
+import SeoHead from './SeoHead.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import '../styles/global.css';
+
+interface NavLink {
+  label: string;
+  url: string;
+}
+
+interface Settings {
+  siteName: string;
+  siteTagline: string;
+  email: string;
+  bookingUrl: string;
+  socialLinks: NavLink[];
+  navigation: NavLink[];
+  primaryCtaLabel: string;
+  primaryCtaHref: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+  ogImage?: string;
+  keywords?: string[];
+  noIndex?: boolean;
+  schemas?: Record<string, unknown>[];
+  settings: Settings;
+}
+
+const {
+  title,
+  description,
+  canonicalPath = '/',
+  ogImage,
+  keywords = [],
+  noIndex = false,
+  schemas = [],
+  settings,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <SeoHead
+      title={title}
+      description={description}
+      canonicalPath={canonicalPath}
+      ogImage={ogImage}
+      keywords={keywords}
+      noIndex={noIndex}
+      schemas={schemas}
+    />
+  </head>
+  <body>
+    <div class="page-shell">
+      <SiteHeader settings={settings} />
+      <main id="content">
+        <slot />
+      </main>
+      <SiteFooter settings={settings} />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cake Marketing Collective Hero Scene</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #050505;
+        --panel: rgba(17, 16, 24, 0.72);
+        --panel-strong: rgba(14, 12, 21, 0.9);
+        --text: #f7f2f8;
+        --muted: rgba(247, 242, 248, 0.72);
+        --primary: #954cf6;
+        --secondary: #cb6ce6;
+        --line: rgba(255, 255, 255, 0.16);
+        --shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 18% 22%, rgba(203, 108, 230, 0.25), transparent 24%),
+          radial-gradient(circle at 80% 14%, rgba(149, 76, 246, 0.28), transparent 18%),
+          radial-gradient(circle at 72% 78%, rgba(203, 108, 230, 0.18), transparent 26%),
+          linear-gradient(180deg, #08070f 0%, #050505 100%);
+        color: var(--text);
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+
+      .stage {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        isolation: isolate;
+      }
+
+      .glow {
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(10px);
+        opacity: 0.7;
+        animation: drift 16s ease-in-out infinite;
+      }
+
+      .glow-a {
+        inset: 8% auto auto 8%;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(circle, rgba(203, 108, 230, 0.72), rgba(203, 108, 230, 0));
+      }
+
+      .glow-b {
+        inset: auto 10% 8% auto;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(149, 76, 246, 0.72), rgba(149, 76, 246, 0));
+        animation-duration: 18s;
+      }
+
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: radial-gradient(circle at center, #000 52%, transparent 88%);
+      }
+
+      .core {
+        position: absolute;
+        inset: 50% auto auto 50%;
+        width: min(52vw, 360px);
+        aspect-ratio: 1;
+        transform: translate(-50%, -46%) rotateX(65deg) rotateZ(-18deg);
+        border-radius: 28%;
+        background:
+          linear-gradient(135deg, rgba(149, 76, 246, 0.16), rgba(203, 108, 230, 0.04)),
+          rgba(8, 8, 14, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow:
+          0 20px 80px rgba(149, 76, 246, 0.22),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      }
+
+      .ring {
+        position: absolute;
+        inset: 50% auto auto 50%;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 50%;
+        transform-origin: center;
+      }
+
+      .ring-a {
+        width: min(64vw, 430px);
+        height: min(64vw, 430px);
+        transform: translate(-50%, -50%) rotateX(72deg) rotateZ(14deg);
+        animation: spin 18s linear infinite;
+      }
+
+      .ring-b {
+        width: min(46vw, 300px);
+        height: min(46vw, 300px);
+        transform: translate(-50%, -50%) rotateX(72deg) rotateZ(-18deg);
+        animation: spin-reverse 12s linear infinite;
+      }
+
+      .beam {
+        position: absolute;
+        inset: 50% 12% auto 12%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.72), transparent);
+        opacity: 0.82;
+      }
+
+      .card {
+        position: absolute;
+        min-width: 132px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(16, 14, 24, 0.92), rgba(8, 7, 12, 0.72));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+      }
+
+      .card small {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--secondary);
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .card strong {
+        display: block;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .card p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.45;
+      }
+
+      .card-story {
+        top: 11%;
+        left: 8%;
+        animation: float-card 12s ease-in-out infinite;
+      }
+
+      .card-room {
+        top: 18%;
+        right: 9%;
+        animation: float-card 14s ease-in-out infinite reverse;
+      }
+
+      .card-sponsor {
+        right: 14%;
+        bottom: 15%;
+        animation: float-card 16s ease-in-out infinite;
+      }
+
+      .card-community {
+        bottom: 12%;
+        left: 10%;
+        animation: float-card 15s ease-in-out infinite reverse;
+      }
+
+      .pulse {
+        position: absolute;
+        inset: 50% auto auto 50%;
+        width: 16px;
+        height: 16px;
+        transform: translate(-50%, -50%);
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        box-shadow: 0 0 0 0 rgba(203, 108, 230, 0.42);
+        animation: pulse 3s ease-out infinite;
+      }
+
+      .caption {
+        position: absolute;
+        left: 24px;
+        bottom: 24px;
+        display: grid;
+        gap: 8px;
+        max-width: 240px;
+        padding: 16px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 18px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .caption strong {
+        font-size: 0.9rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .caption span {
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.5;
+      }
+
+      @keyframes drift {
+        0%,
+        100% {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+
+        50% {
+          transform: translate3d(18px, -22px, 0) scale(1.08);
+        }
+      }
+
+      @keyframes spin {
+        from {
+          transform: translate(-50%, -50%) rotateX(72deg) rotateZ(0deg);
+        }
+
+        to {
+          transform: translate(-50%, -50%) rotateX(72deg) rotateZ(360deg);
+        }
+      }
+
+      @keyframes spin-reverse {
+        from {
+          transform: translate(-50%, -50%) rotateX(72deg) rotateZ(360deg);
+        }
+
+        to {
+          transform: translate(-50%, -50%) rotateX(72deg) rotateZ(0deg);
+        }
+      }
+
+      @keyframes float-card {
+        0%,
+        100% {
+          transform: translate3d(0, 0, 0);
+        }
+
+        50% {
+          transform: translate3d(0, -14px, 0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(203, 108, 230, 0.4);
+        }
+
+        80%,
+        100% {
+          box-shadow: 0 0 0 34px rgba(203, 108, 230, 0);
+        }
+      }
+
+      @media (max-width: 720px) {
+        .card {
+          min-width: 104px;
+          padding: 12px 14px;
+        }
+
+        .card p {
+          display: none;
+        }
+
+        .caption {
+          right: 18px;
+          left: 18px;
+          max-width: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage" aria-label="Branded ambient scene">
+      <div class="grid" aria-hidden="true"></div>
+      <div class="glow glow-a" aria-hidden="true"></div>
+      <div class="glow glow-b" aria-hidden="true"></div>
+      <div class="beam" aria-hidden="true"></div>
+      <div class="ring ring-a" aria-hidden="true"></div>
+      <div class="ring ring-b" aria-hidden="true"></div>
+      <div class="core" aria-hidden="true"></div>
+      <div class="pulse" aria-hidden="true"></div>
+
+      <article class="card card-story">
+        <small>Story</small>
+        <strong>Brand narrative</strong>
+        <p>Positioning that feels lived in, not generic.</p>
+      </article>
+
+      <article class="card card-room">
+        <small>Room</small>
+        <strong>Experiential design</strong>
+        <p>Atmosphere, flow, and surfaces people remember.</p>
+      </article>
+
+      <article class="card card-sponsor">
+        <small>Partners</small>
+        <strong>Sponsorship logic</strong>
+        <p>Packages and partner stories built for the real audience.</p>
+      </article>
+
+      <article class="card card-community">
+        <small>Audience</small>
+        <strong>Cultural fluency</strong>
+        <p>Community-first touchpoints across digital and in-person moments.</p>
+      </article>
+
+      <section class="caption">
+        <strong>Cake Marketing</strong>
+        <span>Self-hosted hero scene so launch does not block on an external 3D export.</span>
+      </section>
+    </main>
+  </body>
+</html>

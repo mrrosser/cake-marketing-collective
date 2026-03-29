@@ -1,0 +1,45 @@
+---
+interface NavLink {
+  label: string;
+  url: string;
+}
+
+interface HeaderSettings {
+  siteName: string;
+  siteTagline: string;
+  navigation: NavLink[];
+  primaryCtaLabel: string;
+  primaryCtaHref: string;
+}
+
+interface Props {
+  settings: HeaderSettings;
+}
+
+const { settings } = Astro.props;
+---
+
+<header class="site-header">
+  <a class="brand-lockup" href="/">
+    <img
+      class="brand-logo"
+      src="/images/cake-marketing-logo.png"
+      alt="Cake Marketing Collective"
+      width="800"
+      height="800"
+    />
+    <span class="brand-stack brand-stack-supporting">
+      <span class="sr-only">{settings.siteName}</span>
+      <span class="brand-name">Marketing Collective</span>
+      <span class="brand-tagline">{settings.siteTagline}</span>
+    </span>
+  </a>
+  <nav class="site-nav" aria-label="Primary">
+    {settings.navigation.map((link) => (
+      <a href={link.url}>{link.label}</a>
+    ))}
+  </nav>
+  <a class="button button-small" href={settings.primaryCtaHref}>
+    {settings.primaryCtaLabel}
+  </a>
+</header>

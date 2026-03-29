@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { getSingleton } from '../lib/content';
+import { buildOrganizationSchema, withTitleTemplate } from '../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const title = withTitleTemplate('Not Found', seo.titleTemplate);
+const description = 'The page you requested could not be found.';
+const schemas = [buildOrganizationSchema(settings)];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/404"
+  ogImage={seo.defaultOgImage}
+  noIndex={true}
+  keywords={seo.fallbackKeywords}
+  schemas={schemas}
+  settings={settings}
+>
+  <section class="section">
+    <div class="section-card">
+      <p class="eyebrow">404</p>
+      <h1>That page slipped out of the room.</h1>
+      <p>
+        Use the primary navigation to get back on track or head straight to the discovery call
+        if you are ready to talk about the next event.
+      </p>
+      <div class="button-row">
+        <a class="button" href="/">Go home</a>
+        <a class="button button-ghost" href="/work-with-us">Work with us</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

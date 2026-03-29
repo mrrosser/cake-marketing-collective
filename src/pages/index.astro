@@ -1,17 +1,138 @@
 ---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../components/BaseLayout.astro';
+import BrandSystem from '../components/BrandSystem.astro';
+import FaqList from '../components/FaqList.astro';
+import HeroScene from '../components/HeroScene.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import { getSingleton, sortByOrder } from '../lib/content';
+import {
+  buildFaqSchema,
+  buildOrganizationSchema,
+  buildProfessionalServiceSchema,
+  withTitleTemplate,
+} from '../lib/seo';
 
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const home = (await getSingleton('home')).data;
+const services = sortByOrder(await getCollection('services'));
+const caseStudies = sortByOrder(await getCollection('caseStudies'));
+const faqs = sortByOrder(await getCollection('faqs'));
+const featuredCase = caseStudies[0];
+const title = withTitleTemplate('Home', seo.titleTemplate);
+const description = home.heroSubheadline;
+const keywords = [...seo.serviceKeywords, ...seo.fallbackKeywords];
+const schemas = [
+  buildOrganizationSchema(settings),
+  buildProfessionalServiceSchema(
+    settings,
+    services.map((service) => service.data),
+  ),
+  buildFaqSchema(faqs.map((faq) => faq.data)),
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/"
+  ogImage={seo.defaultOgImage}
+  keywords={keywords}
+  schemas={schemas}
+  settings={settings}
+>
+  <HeroScene
+    eyebrow={home.heroEyebrow}
+    title={home.heroHeadline}
+    copy={home.heroBody}
+    primaryLabel={settings.primaryCtaLabel}
+    primaryHref={settings.primaryCtaHref}
+    secondaryLabel={settings.secondaryCtaLabel}
+    secondaryHref={settings.secondaryCtaHref}
+    scenePath={settings.splineScenePath}
+  />
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card">
+        <p class="eyebrow">Overview</p>
+        <h2>{home.overviewTitle}</h2>
+        <p>{home.overviewBody}</p>
+        <ul>
+          {home.promises.map((promise) => <li>{promise}</li>)}
+        </ul>
+      </article>
+      <article class="section-card">
+        <p class="eyebrow">What we build</p>
+        <h2>{home.heroSubheadline}</h2>
+        <p>
+          Event marketing is not treated here as generic promotion. The work holds story,
+          atmosphere, sponsorship logic, and digital clarity together so the audience feels
+          the brand long before the event begins.
+        </p>
+        <div class="button-row">
+          <a class="button button-ghost" href="/services">Explore services</a>
+          <a class="button button-ghost" href="/portfolio">View portfolio</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="stats-grid">
+      {settings.stats.map((stat) => (
+        <article class="stat-card">
+          <strong>{stat.value}</strong>
+          <p>{stat.label}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">Services</p>
+    <h2>Strategy, story, sponsorship, and the surfaces people remember.</h2>
+    <ServiceGrid services={services.slice(0, 4)} />
+  </section>
+
+  <section class="section">
+    <BrandSystem title="Visual Direction" />
+  </section>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card">
+        <p class="eyebrow">Funding and partners</p>
+        <h2>{home.fundingTitle}</h2>
+        <p>{home.fundingBody}</p>
+      </article>
+      <article class="section-card">
+        <p class="eyebrow">Featured work</p>
+        <h2>{featuredCase?.data.title ?? 'Portfolio update in progress'}</h2>
+        <p>{featuredCase?.data.summary ?? 'Case study export from Squarespace is still underway.'}</p>
+        <a class="button button-ghost" href="/portfolio">See the portfolio</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">Frequently asked</p>
+    <h2>Everything starts with clarity.</h2>
+    <FaqList faqs={faqs} />
+  </section>
+
+  <section class="section">
+    <div class="cta-panel">
+      <p class="eyebrow">Work with Cake</p>
+      <h2>{home.closingTitle}</h2>
+      <p>{home.closingBody}</p>
+      <div class="button-row">
+        <a class="button" href="/work-with-us">Start the process</a>
+        <a class="button button-ghost" href={settings.bookingUrl} target="_blank" rel="noreferrer">
+          Book discovery call
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

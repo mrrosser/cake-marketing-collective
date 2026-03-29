@@ -1,0 +1,50 @@
+---
+interface NavLink {
+  label: string;
+  url: string;
+}
+
+interface FooterSettings {
+  siteName: string;
+  email: string;
+  bookingUrl: string;
+  socialLinks: NavLink[];
+}
+
+interface Props {
+  settings: FooterSettings;
+}
+
+const { settings } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <p class="eyebrow">Cake Marketing Collective</p>
+      <p class="footer-copy">
+        Founder-led strategy for events, partnerships, and brand experiences that need
+        substance as much as style.
+      </p>
+    </div>
+    <div>
+      <p class="footer-heading">Contact</p>
+      <a href={`mailto:${settings.email}`}>{settings.email}</a>
+      <a href={settings.bookingUrl} target="_blank" rel="noreferrer">Book discovery call</a>
+    </div>
+    <div>
+      <p class="footer-heading">Social</p>
+      {settings.socialLinks.map((link) => (
+        <a href={link.url} target="_blank" rel="noreferrer">{link.label}</a>
+      ))}
+    </div>
+  </div>
+  <div class="footer-meta">
+    <span>© {year} {settings.siteName}</span>
+    <div class="footer-links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { getSingleton } from '../lib/content';
+import { buildOrganizationSchema, withTitleTemplate } from '../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const title = withTitleTemplate('Privacy', seo.titleTemplate);
+const description = 'Placeholder privacy policy for Cake Marketing Collective pending final legal copy.';
+const schemas = [buildOrganizationSchema(settings)];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/privacy"
+  ogImage={seo.defaultOgImage}
+  keywords={seo.fallbackKeywords}
+  schemas={schemas}
+  settings={settings}
+>
+  <section class="section">
+    <div class="section-card">
+      <p class="eyebrow">Privacy</p>
+      <h1>Privacy policy placeholder</h1>
+      <p>
+        Final privacy policy copy is still pending. Before launch, replace this placeholder with
+        the approved policy covering site analytics, intake forms, email communication, and any
+        third-party services used on the production site.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

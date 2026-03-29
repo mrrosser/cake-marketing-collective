@@ -1,0 +1,145 @@
+backend:
+  name: github
+  repo: mrrosser/cake-marketing-collective
+  branch: main
+
+logo_url: /images/cake-marketing-logo.png
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "siteSettings"
+    label: "Site Settings"
+    files:
+      - label: "Global Settings"
+        name: "global"
+        file: "src/content/siteSettings/global.md"
+        fields:
+          - { label: "Site Name", name: "siteName", widget: "string" }
+          - { label: "Tagline", name: "siteTagline", widget: "string" }
+          - { label: "Description", name: "siteDescription", widget: "text" }
+          - { label: "Primary CTA Label", name: "primaryCtaLabel", widget: "string" }
+          - { label: "Primary CTA Link", name: "primaryCtaHref", widget: "string" }
+          - { label: "Secondary CTA Label", name: "secondaryCtaLabel", widget: "string" }
+          - { label: "Secondary CTA Link", name: "secondaryCtaHref", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Booking URL", name: "bookingUrl", widget: "string" }
+          - { label: "Form URL", name: "formUrl", widget: "string", required: false }
+          - label: "Form Status"
+            name: "formStatus"
+            widget: "select"
+            options: ["pending", "live"]
+          - { label: "Phone", name: "phone", widget: "string", required: false }
+          - { label: "Address", name: "address", widget: "text", required: false }
+          - { label: "Service Area", name: "serviceArea", widget: "string", required: false }
+          - { label: "Spline Scene Path", name: "splineScenePath", widget: "string", required: false }
+          - label: "Navigation"
+            name: "navigation"
+            widget: "list"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+          - label: "Social Links"
+            name: "socialLinks"
+            widget: "list"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+          - label: "Stats"
+            name: "stats"
+            widget: "list"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Value", name: "value", widget: "string" }
+  - name: "home"
+    label: "Home"
+    files:
+      - label: "Landing Page Copy"
+        name: "landing"
+        file: "src/content/home/landing.md"
+        fields:
+          - { label: "Hero Eyebrow", name: "heroEyebrow", widget: "string" }
+          - { label: "Hero Headline", name: "heroHeadline", widget: "string" }
+          - { label: "Hero Subheadline", name: "heroSubheadline", widget: "text" }
+          - { label: "Hero Body", name: "heroBody", widget: "text" }
+          - { label: "Overview Title", name: "overviewTitle", widget: "string" }
+          - { label: "Overview Body", name: "overviewBody", widget: "text" }
+          - { label: "Promises", name: "promises", widget: "list" }
+          - { label: "Funding Title", name: "fundingTitle", widget: "string" }
+          - { label: "Funding Body", name: "fundingBody", widget: "text" }
+          - { label: "Closing Title", name: "closingTitle", widget: "string" }
+          - { label: "Closing Body", name: "closingBody", widget: "text" }
+  - name: "founder"
+    label: "Founder"
+    files:
+      - label: "Cake Douglas"
+        name: "cake-douglas"
+        file: "src/content/founder/cake-douglas.md"
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Location", name: "location", widget: "string" }
+          - { label: "Image", name: "image", widget: "image" }
+          - { label: "Photo Credit", name: "photoCredit", widget: "string", required: false }
+          - { label: "Summary", name: "summary", widget: "text" }
+          - { label: "Philosophy", name: "philosophy", widget: "text" }
+          - { label: "Signature", name: "signature", widget: "text" }
+          - { label: "Highlights", name: "highlights", widget: "list" }
+  - name: "services"
+    label: "Services"
+    folder: "src/content/services"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Detail", name: "detail", widget: "text" }
+      - label: "Accent"
+        name: "accent"
+        widget: "select"
+        options: ["primary", "secondary"]
+      - { label: "Order", name: "order", widget: "number" }
+      - { label: "Deliverables", name: "deliverables", widget: "list" }
+  - name: "caseStudies"
+    label: "Case Studies"
+    folder: "src/content/caseStudies"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Client", name: "client", widget: "string" }
+      - { label: "Timeframe", name: "timeframe", widget: "string" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Challenge", name: "challenge", widget: "text" }
+      - { label: "Response", name: "response", widget: "text" }
+      - { label: "Outcome", name: "outcome", widget: "text" }
+      - { label: "Order", name: "order", widget: "number" }
+      - label: "Metrics"
+        name: "metrics"
+        widget: "list"
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - { label: "Value", name: "value", widget: "string" }
+  - name: "testimonials"
+    label: "Testimonials"
+    folder: "src/content/testimonials"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Quote", name: "quote", widget: "text" }
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Role", name: "role", widget: "string" }
+      - { label: "Company", name: "company", widget: "string" }
+      - { label: "Order", name: "order", widget: "number" }
+  - name: "faqs"
+    label: "FAQs"
+    folder: "src/content/faqs"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Question", name: "question", widget: "string" }
+      - { label: "Answer", name: "answer", widget: "text" }
+      - { label: "Order", name: "order", widget: "number" }

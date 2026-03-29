@@ -1,0 +1,56 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  copy: string;
+  primaryLabel: string;
+  primaryHref: string;
+  secondaryLabel: string;
+  secondaryHref: string;
+  scenePath?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  copy,
+  primaryLabel,
+  primaryHref,
+  secondaryLabel,
+  secondaryHref,
+  scenePath = '',
+} = Astro.props;
+
+const hasScene = Boolean(scenePath);
+---
+
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{title}</h1>
+    <p class="hero-body">{copy}</p>
+    <div class="button-row">
+      <a class="button" href={primaryHref}>{primaryLabel}</a>
+      <a class="button button-ghost" href={secondaryHref}>{secondaryLabel}</a>
+    </div>
+  </div>
+  <div class:list={['hero-visual', hasScene ? 'scene-ready' : 'scene-fallback']}>
+    {hasScene ? (
+      <iframe
+        src={scenePath}
+        title="Cake Marketing Collective hero scene"
+        loading="lazy"
+      />
+    ) : (
+      <div class="scene-fallback-shell" aria-hidden="true">
+        <div class="scene-orb scene-orb-large"></div>
+        <div class="scene-orb scene-orb-small"></div>
+        <div class="scene-line"></div>
+        <div class="scene-caption">
+          <span>Hero scene unavailable</span>
+          <span>The branded fallback still keeps the launch moving.</span>
+        </div>
+      </div>
+    )}
+  </div>
+</section>

@@ -1,0 +1,45 @@
+---
+import { buildCanonical } from '../lib/seo';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+  ogImage?: string;
+  noIndex?: boolean;
+  keywords?: string[];
+  schemas?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  canonicalPath = '/',
+  ogImage = '/og/default.svg',
+  noIndex = false,
+  keywords = [],
+  schemas = [],
+} = Astro.props;
+
+const canonical = buildCanonical(canonicalPath);
+const socialImage = ogImage.startsWith('http') ? ogImage : buildCanonical(ogImage);
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#050505" />
+<link rel="canonical" href={canonical} />
+{keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+{noIndex && <meta name="robots" content="noindex, nofollow" />}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Cake Marketing Collective" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={socialImage} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImage} />
+{schemas.map((schema) => <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />)}
