@@ -11,13 +11,16 @@ test('homepage loads with core navigation and ctas', async ({ page }) => {
   await expect(page.getByLabel('Primary').getByRole('link', { name: 'About' })).toBeVisible();
 });
 
-test('work with us page exposes booking flow and pending form state', async ({ page }) => {
+test('work with us page exposes the live intake and booking flow', async ({ page }) => {
   await page.goto('/work-with-us');
 
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'Two steps, one clear next move.',
   );
-  await expect(page.getByText('Public form link pending')).toBeVisible();
+  await expect(page.getByText('Form is live')).toBeVisible();
+
+  const intakeLink = page.getByRole('link', { name: 'Open intake form' });
+  await expect(intakeLink).toHaveAttribute('href', /docs\.google\.com\/forms/);
 
   const bookingLink = page.getByRole('link', { name: 'Book discovery call' }).first();
   await expect(bookingLink).toHaveAttribute(

@@ -3,6 +3,8 @@ backend:
   repo: mrrosser/cake-marketing-collective
   branch: main
 
+site_url: https://cake-marketing-collective.netlify.app
+display_url: https://cake-marketing-collective.netlify.app
 logo_url: /images/cake-marketing-logo.png
 
 media_folder: "public/images/uploads"

@@ -1,6 +1,12 @@
 # Cake Marketing Collective
 
-Marketing site rebuild for `cakemarketingllc.com`, built with Astro and deployed on Netlify. The project is designed as a static-first marketing site with editable content collections, SEO metadata, a branded Spline-ready hero, and a Google Form confirmation-email automation scaffold.
+Marketing site rebuild for `cakemarketingllc.com`, built with Astro and deployed on Netlify. The project is designed as a static-first marketing site with editable content collections, SEO metadata, a branded self-hosted hero scene, and a Google Form confirmation-email automation scaffold.
+
+## Live Project References
+
+- GitHub repo: `https://github.com/mrrosser/cake-marketing-collective`
+- Netlify site: `https://cake-marketing-collective.netlify.app`
+- Netlify admin: `https://app.netlify.com/projects/cake-marketing-collective`
 
 ## Stack
 
@@ -33,9 +39,9 @@ Editor-managed content lives in `src/content/`. Decap CMS is mounted at `/admin/
 
 Before enabling editor access in production:
 
-1. Connect the repo to GitHub.
-2. Update `public/admin/config.yml` with the real repository slug and branch.
-3. Configure the Decap OAuth flow of your choice. This project deliberately does not depend on Netlify Identity.
+1. The repo slug and branch are already set to `mrrosser/cake-marketing-collective` on `main`.
+2. Configure the Decap OAuth flow of your choice. This project deliberately does not depend on Netlify Identity.
+3. Set the final production `site_url` and `display_url` in `public/admin/config.yml` after `cakemarketingllc.com` is attached.
 
 ## Google Form Automation
 
@@ -43,10 +49,10 @@ The Google Form confirmation-email scaffold lives in `apps-script/google-form-co
 
 To finish activation:
 
-1. Publish the Google Form and capture the public responder URL.
-2. Update the form URL in content or CMS.
-3. Push the Apps Script project with `clasp`.
-4. Add the installable `onFormSubmit` trigger.
+1. The public responder URL is already wired into `src/content/siteSettings/global.md`.
+2. Push the Apps Script project with `clasp`.
+3. Add the installable `onFormSubmit` trigger from the Google account that owns the form.
+4. Submit one staging response to confirm branded email delivery and calendar handoff.
 
 See `docs/google-form-automation.md` for the full workflow.
 
@@ -57,14 +63,26 @@ This project is configured for Netlify in `netlify.toml`.
 Preview deploy:
 
 ```bash
-npx netlify deploy --build
+npx netlify-cli deploy --build
 ```
 
 Production deploy:
 
 ```bash
-npx netlify deploy --build --prod
+npx netlify-cli deploy --build --prod
 ```
+
+Current linked site:
+
+- Site name: `cake-marketing-collective`
+- Site ID: `c316177a-0dd1-48b2-b619-df1cf1348443`
+- Production URL: `https://cake-marketing-collective.netlify.app`
+
+Remaining Netlify cutover tasks:
+
+1. Attach `cakemarketingllc.com` and `www.cakemarketingllc.com` in Netlify.
+2. Approve the GitHub authorization inside Netlify if you want push-triggered continuous deployment from the repo.
+3. Replace the temporary Netlify subdomain values in `public/admin/config.yml` with the custom domain after DNS cutover.
 
 ## Migration Documents
 
