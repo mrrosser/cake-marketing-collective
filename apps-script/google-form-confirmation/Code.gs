@@ -25,8 +25,38 @@ function setScriptDefaults() {
   PropertiesService.getScriptProperties().setProperties({
     BOOKING_URL: 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1b2erysb3xlhK3aszk0xIlfGY3mde5PKtqnX3S2uo90SjdwwYeQDOnKt_dP0d074eiUpowId6t',
     INTERNAL_NOTIFY_EMAIL: 'contact@cakemarketingllc.com',
-    EXPECTED_FORM_ID: '1FAIpQLSeWYq4nROWTPU8hvwwu8Pvm1-qGNB8DkeIo001dFaPC_HsR7g',
+    FORM_FILE_ID: '1hbfukZNrUW2gc0Y60eiNufHDw7kFqnW9f8oQDOTtCbs',
+    EXPECTED_FORM_ID: '1hbfukZNrUW2gc0Y60eiNufHDw7kFqnW9f8oQDOTtCbs',
   });
+}
+
+function installFormSubmitTrigger() {
+  var formId = getRequiredProperty_('FORM_FILE_ID');
+  var existingTriggers = ScriptApp.getProjectTriggers();
+
+  for (var index = 0; index < existingTriggers.length; index += 1) {
+    var existingTrigger = existingTriggers[index];
+    var existingSourceId =
+      typeof existingTrigger.getTriggerSourceId === 'function'
+        ? existingTrigger.getTriggerSourceId()
+        : '';
+
+    if (
+      existingTrigger.getHandlerFunction() === 'onFormSubmit' &&
+      String(existingSourceId || '') === formId
+    ) {
+      return existingTrigger.getUniqueId();
+    }
+  }
+
+  var form = FormApp.openById(formId);
+  var trigger = ScriptApp.newTrigger('onFormSubmit').forForm(form).onFormSubmit().create();
+  return trigger.getUniqueId();
+}
+
+function configureProject() {
+  setScriptDefaults();
+  return installFormSubmitTrigger();
 }
 
 function mapPayload_(response) {
