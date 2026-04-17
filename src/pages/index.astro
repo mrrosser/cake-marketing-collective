@@ -1,35 +1,47 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../components/BaseLayout.astro';
-import BrandSystem from '../components/BrandSystem.astro';
-import FaqList from '../components/FaqList.astro';
 import HeroScene from '../components/HeroScene.astro';
-import ServiceGrid from '../components/ServiceGrid.astro';
 import { getSingleton, sortByOrder } from '../lib/content';
 import {
-  buildFaqSchema,
+  buildMarketingAgencySchema,
   buildOrganizationSchema,
   buildProfessionalServiceSchema,
-  withTitleTemplate,
 } from '../lib/seo';
 
 const settings = (await getSingleton('siteSettings')).data;
 const seo = (await getSingleton('seoDefaults')).data;
 const home = (await getSingleton('home')).data;
-const services = sortByOrder(await getCollection('services'));
+const founder = (await getSingleton('founder')).data;
 const caseStudies = sortByOrder(await getCollection('caseStudies'));
-const faqs = sortByOrder(await getCollection('faqs'));
+const services = sortByOrder(await getCollection('services'));
 const featuredCase = caseStudies[0];
-const title = withTitleTemplate('Home', seo.titleTemplate);
-const description = home.heroSubheadline;
-const keywords = [...seo.serviceKeywords, ...seo.fallbackKeywords];
+const city = settings.primaryCity || 'Shreveport';
+const title = `Cake Marketing Collective | Integrated Marketing & Experiential Agency in ${city}`;
+const description =
+  'A performance-driven marketing agency blending paid media, brand strategy, content production, and experiential campaigns.';
+const keywords = [...seo.serviceKeywords, ...seo.geoKeywords, ...seo.caseStudyKeywords];
+const serviceHighlights = [
+  {
+    title: 'Performance Marketing',
+    text: 'Paid media systems engineered for measurable revenue growth.',
+    href: '/services/performance-marketing',
+  },
+  {
+    title: 'Brand & Web',
+    text: 'Positioning, web structure, and messaging built to create clarity and action.',
+    href: '/services/branding-web',
+  },
+  {
+    title: 'Experiential Marketing',
+    text: 'Moments designed to travel beyond the room and amplify digitally.',
+    href: '/services/experiential-marketing',
+  },
+];
 const schemas = [
   buildOrganizationSchema(settings),
-  buildProfessionalServiceSchema(
-    settings,
-    services.map((service) => service.data),
-  ),
-  buildFaqSchema(faqs.map((faq) => faq.data)),
+  buildMarketingAgencySchema(settings),
+  buildProfessionalServiceSchema(settings, services.map((service) => service.data)),
 ];
 ---
 
@@ -45,94 +57,111 @@ const schemas = [
   <HeroScene
     eyebrow={home.heroEyebrow}
     title={home.heroHeadline}
+    subheadline={home.heroSubheadline}
     copy={home.heroBody}
     primaryLabel={settings.primaryCtaLabel}
     primaryHref={settings.primaryCtaHref}
     secondaryLabel={settings.secondaryCtaLabel}
     secondaryHref={settings.secondaryCtaHref}
     scenePath={settings.splineScenePath}
+    heroImage={founder.image}
+    heroImageAlt={`Portrait of ${founder.name}`}
   />
 
   <section class="section">
     <div class="section-grid">
-      <article class="section-card">
-        <p class="eyebrow">Overview</p>
-        <h2>{home.overviewTitle}</h2>
-        <p>{home.overviewBody}</p>
-        <ul>
-          {home.promises.map((promise) => <li>{promise}</li>)}
+      <article class="section-card panel">
+        <p class="eyebrow">Reality</p>
+        <h2>{home.positioningTitle}</h2>
+        <p>{home.positioningBody}</p>
+        <p class="reality-copy">Marketing infrastructure beats marketing theater.</p>
+      </article>
+      <article class="section-card panel">
+        <p class="eyebrow">Proof</p>
+        <h2>Performance-backed, not presentation-backed.</h2>
+        <p>Clear outcomes matter more than decorative stat boxes.</p>
+        <ul class="proof-list">
+          {home.proofPoints.map((point) => (
+            <li class="metric-pill">{point}</li>
+          ))}
         </ul>
       </article>
-      <article class="section-card">
-        <p class="eyebrow">What we build</p>
-        <h2>{home.heroSubheadline}</h2>
-        <p>
-          Event marketing is not treated here as generic promotion. The work holds story,
-          atmosphere, sponsorship logic, and digital clarity together so the audience feels
-          the brand long before the event begins.
-        </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-intro">
+      <p class="eyebrow">Services</p>
+      <h2>{home.servicesTitle}</h2>
+      <p class="section-lead">{home.servicesBody}</p>
+    </div>
+    <div class="grid-3">
+      {serviceHighlights.map((item) => (
+        <article class="section-card panel">
+          <p class="eyebrow">Pillar</p>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+          <div class="button-row">
+            <a class="button button-ghost button-small" href={item.href}>View service</a>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="button-row" style="margin-top: 24px;">
+      <a class="button button-ghost" href="/services">Explore all services</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card panel">
+        <p class="eyebrow">Work</p>
+        <h2>{home.caseStudiesTitle}</h2>
+        <p>{home.caseStudiesBody}</p>
+        {featuredCase ? (
+          <>
+            <p><strong>{featuredCase.data.title}</strong></p>
+            <p>{featuredCase.data.summary}</p>
+            <div class="button-row">
+              <a class="button button-ghost" href="/work">
+                View Work
+              </a>
+            </div>
+          </>
+        ) : null}
+      </article>
+      <article class="section-card panel founder-preview-card">
+        <p class="eyebrow">Founder</p>
+        <img class="founder-portrait founder-preview-image" src={founder.image} alt="Cake Douglas, founder of Cake Marketing Collective" />
+        <h2>Founder-led strategy with operating discipline.</h2>
+        <p>{founder.summary}</p>
         <div class="button-row">
-          <a class="button button-ghost" href="/services">Explore services</a>
-          <a class="button button-ghost" href="/portfolio">View portfolio</a>
+          <a class="button button-ghost" href="/about">About Cake</a>
         </div>
       </article>
     </div>
   </section>
 
   <section class="section">
-    <div class="stats-grid">
-      {settings.stats.map((stat) => (
-        <article class="stat-card">
-          <strong>{stat.value}</strong>
-          <p>{stat.label}</p>
-        </article>
-      ))}
-    </div>
+    <article class="section-card panel">
+      <p class="eyebrow">GEO Authority</p>
+      <h2>{home.collectiveTitle}</h2>
+      <p>{home.collectiveBody}</p>
+      <p><strong>Primary market:</strong> {city}, {settings.primaryState || 'Louisiana'}.</p>
+    </article>
   </section>
 
   <section class="section">
-    <p class="eyebrow">Services</p>
-    <h2>Strategy, story, sponsorship, and the surfaces people remember.</h2>
-    <ServiceGrid services={services.slice(0, 4)} />
-  </section>
-
-  <section class="section">
-    <BrandSystem title="Visual Direction" />
-  </section>
-
-  <section class="section">
-    <div class="section-grid">
-      <article class="section-card">
-        <p class="eyebrow">Funding and partners</p>
-        <h2>{home.fundingTitle}</h2>
-        <p>{home.fundingBody}</p>
-      </article>
-      <article class="section-card">
-        <p class="eyebrow">Featured work</p>
-        <h2>{featuredCase?.data.title ?? 'Portfolio update in progress'}</h2>
-        <p>{featuredCase?.data.summary ?? 'Case study export from Squarespace is still underway.'}</p>
-        <a class="button button-ghost" href="/portfolio">See the portfolio</a>
-      </article>
-    </div>
-  </section>
-
-  <section class="section">
-    <p class="eyebrow">Frequently asked</p>
-    <h2>Everything starts with clarity.</h2>
-    <FaqList faqs={faqs} />
-  </section>
-
-  <section class="section">
-    <div class="cta-panel">
-      <p class="eyebrow">Work with Cake</p>
-      <h2>{home.closingTitle}</h2>
-      <p>{home.closingBody}</p>
+    <article class="section-card panel">
+      <p class="eyebrow">Contact</p>
+      <h2>{home.contactTitle}</h2>
+      <p>{home.contactBody}</p>
       <div class="button-row">
-        <a class="button" href="/work-with-us">Start the process</a>
-        <a class="button button-ghost" href={settings.bookingUrl} target="_blank" rel="noreferrer">
-          Book discovery call
+        <a class="button" href={settings.bookingUrl} target="_blank" rel="noreferrer">
+          Book a Strategy Session
         </a>
+        <a class="button button-ghost" href="/contact">Start the intake</a>
       </div>
-    </div>
+    </article>
   </section>
 </BaseLayout>

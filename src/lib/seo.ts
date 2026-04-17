@@ -10,6 +10,8 @@ export interface SiteSettingsData {
   siteDescription: string;
   email: string;
   bookingUrl: string;
+  primaryCity?: string;
+  primaryState?: string;
   serviceArea?: string;
   socialLinks: NavLink[];
 }
@@ -27,11 +29,34 @@ export interface ServiceData {
   summary: string;
   detail: string;
   slug: string;
+  internalLinks?: string[];
 }
 
 export interface FaqData {
   question: string;
   answer: string;
+}
+
+export interface CaseStudyData {
+  title: string;
+  client: string;
+  sector: string;
+  timeframe: string;
+  summary: string;
+  overview: string;
+  challenge: string;
+  strategy: string;
+  execution: string;
+  results: string;
+  relatedServices?: string[];
+}
+
+export interface ArticleData {
+  title: string;
+  category: string;
+  excerpt: string;
+  author: string;
+  publishDate: string;
 }
 
 export function buildCanonical(pathname: string): string {
@@ -51,6 +76,24 @@ export function buildOrganizationSchema(settings: SiteSettingsData): Record<stri
     url: SITE_URL,
     email: settings.email,
     sameAs: settings.socialLinks.map((link) => link.url),
+  };
+}
+
+export function buildMarketingAgencySchema(settings: SiteSettingsData): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'MarketingAgency',
+    name: settings.siteName,
+    url: SITE_URL,
+    logo: buildCanonical('/images/cake-marketing-logo.png'),
+    email: settings.email,
+    areaServed: settings.serviceArea,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: settings.primaryCity,
+      addressRegion: settings.primaryState,
+      addressCountry: 'US',
+    },
   };
 }
 
@@ -75,7 +118,7 @@ export function buildProfessionalServiceSchema(
     '@type': 'ProfessionalService',
     name: settings.siteName,
     url: SITE_URL,
-    areaServed: settings.serviceArea,
+    areaServed: settings.serviceArea || settings.primaryCity,
     email: settings.email,
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
@@ -104,5 +147,72 @@ export function buildFaqSchema(faqs: FaqData[]): Record<string, unknown> {
         text: faq.answer,
       },
     })),
+  };
+}
+
+export function buildArticleSchema(
+  article: ArticleData,
+  pathname: string,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    articleSection: article.category,
+    description: article.excerpt,
+    author: {
+      '@type': 'Organization',
+      name: article.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Cake Marketing Collective',
+      url: SITE_URL,
+    },
+    datePublished: article.publishDate,
+    mainEntityOfPage: buildCanonical(pathname),
+  };
+}
+
+export function buildCaseStudySchema(
+  caseStudy: CaseStudyData,
+  pathname: string,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CaseStudy',
+    name: caseStudy.title,
+    headline: caseStudy.title,
+    about: caseStudy.sector,
+    creator: {
+      '@type': 'Organization',
+      name: 'Cake Marketing Collective',
+      url: SITE_URL,
+    },
+    description: caseStudy.summary,
+    abstract: caseStudy.overview,
+    keywords: [caseStudy.client, caseStudy.sector, caseStudy.timeframe],
+    mainEntityOfPage: buildCanonical(pathname),
+  };
+}
+
+export function buildCreativeWorkSchema(
+  caseStudy: CaseStudyData,
+  pathname: string,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: caseStudy.title,
+    headline: caseStudy.title,
+    description: caseStudy.summary,
+    abstract: caseStudy.overview,
+    creator: {
+      '@type': 'Organization',
+      name: 'Cake Marketing Collective',
+      url: SITE_URL,
+    },
+    about: caseStudy.sector,
+    mainEntityOfPage: buildCanonical(pathname),
   };
 }

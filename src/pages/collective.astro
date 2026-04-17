@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../components/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { getSingleton, sortByOrder } from '../lib/content';
+import { buildOrganizationSchema, withTitleTemplate } from '../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const founder = (await getSingleton('founder')).data;
+const services = sortByOrder(await getCollection('services'));
+const title = withTitleTemplate('Collective', seo.titleTemplate);
+const description = 'Learn how Cake Marketing Collective uses a founder-led, modular delivery model to combine strategy, creative, and channel expertise without agency drag.';
+const operatingCards = [
+  {
+    title: 'Strategy lead',
+    body: 'Cake sets direction, priorities, and client communication so the work does not splinter as more people touch it.',
+  },
+  {
+    title: 'Right-fit specialists',
+    body: 'Specialists are brought in because the scope calls for them, not because an agency model needs more billable layers.',
+  },
+  {
+    title: 'Accountable delivery',
+    body: 'You get fewer handoffs, faster decisions, and clearer ownership over what is supposed to change.',
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/collective"
+  ogImage={seo.defaultOgImage}
+  keywords={seo.fallbackKeywords}
+  schemas={[buildOrganizationSchema(settings)]}
+  settings={settings}
+>
+  <PageHero
+    eyebrow="Collective"
+    title="A senior operating model without agency drag."
+    description="Cake Marketing Collective is built for clients who want experienced thinking, focused execution, and less operational noise."
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">Led by</p>
+      <h2>{founder.name}</h2>
+      <p>{founder.title}</p>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="grid-3">
+      {operatingCards.map((card) => (
+        <article class="section-card panel">
+          <p class="eyebrow">Model</p>
+          <h3>{card.title}</h3>
+          <p>{card.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card panel">
+        <p class="eyebrow">Why it works</p>
+        <h2>Built for clients who need integration more than overhead.</h2>
+        <p>
+          The structure makes it easier to connect strategy, SEO, lifecycle systems, content,
+          social, and experiential work under one operating plan without paying for layers that
+          do not improve the outcome.
+        </p>
+      </article>
+      <article class="section-card panel">
+        <p class="eyebrow">Service alignment</p>
+        <h2>Every service plugs into the same decision framework.</h2>
+        <ul class="tag-list">
+          {services.map((service) => (
+            <li class="tag-pill">{service.data.title}</li>
+          ))}
+        </ul>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

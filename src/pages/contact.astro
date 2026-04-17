@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { IntakeFlow } from '../components/app/IntakeFlow';
+import PageHero from '../components/PageHero.astro';
+import { getSingleton } from '../lib/content';
+import { buildOrganizationSchema, withTitleTemplate } from '../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const title = withTitleTemplate('Contact', seo.titleTemplate);
+const description = 'Start with the native Cake intake flow, then move into discovery or a strategy session based on fit.';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/contact"
+  ogImage={seo.defaultOgImage}
+  keywords={seo.fallbackKeywords}
+  schemas={[buildOrganizationSchema(settings)]}
+  settings={settings}
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Start with the right intake. Route to the right next step."
+    description="Each service runs its own progressive multi-step form so leads can share better context without hitting a giant wall of fields."
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">Routing</p>
+      <h2>Discovery or strategy.</h2>
+      <p>
+        Native intake responses route leads into discovery or strategy, create CRM-ready records,
+        and flag whether the design workflow should spin up immediately.
+      </p>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <IntakeFlow
+      bookingUrl={settings.bookingUrl}
+      email={settings.email}
+      client:load
+    />
+  </section>
+
+  <section class="section">
+    <article class="section-card panel">
+      <p class="eyebrow">After submission</p>
+      <h2>What happens next.</h2>
+      <ul>
+        <li>Discovery-fit leads move directly into a booking handoff.</li>
+        <li>Strategy-fit leads receive manual pricing and deposit follow-up.</li>
+        <li>Creative-heavy answers can trigger a Stitch-ready project draft.</li>
+        <li>Every submission gets a correlation ID for CRM and ops tracking.</li>
+      </ul>
+    </article>
+  </section>
+</BaseLayout>

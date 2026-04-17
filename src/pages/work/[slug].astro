@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getSingleton } from '../../lib/content';
+import {
+  buildCaseStudySchema,
+  buildCreativeWorkSchema,
+  buildMarketingAgencySchema,
+  buildOrganizationSchema,
+  withTitleTemplate,
+} from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('caseStudies');
+  return caseStudies.map((caseStudy) => ({
+    params: { slug: caseStudy.data.slug },
+    props: { caseStudy },
+  }));
+}
+
+const { caseStudy } = Astro.props;
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const services = await getCollection('services');
+const relatedServices = services.filter((service) =>
+  (caseStudy.data.relatedServices ?? []).includes(service.data.slug),
+);
+const title = withTitleTemplate(caseStudy.data.title, seo.titleTemplate);
+const description = caseStudy.data.summary;
+const pathname = `/work/${caseStudy.data.slug}`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath={pathname}
+  ogImage={caseStudy.data.image}
+  ogType="article"
+  keywords={[caseStudy.data.sector, ...seo.caseStudyKeywords]}
+  schemas={[
+    buildOrganizationSchema(settings),
+    buildMarketingAgencySchema(settings),
+    buildCaseStudySchema(caseStudy.data, pathname),
+    buildCreativeWorkSchema(caseStudy.data, pathname),
+  ]}
+  settings={settings}
+>
+  <PageHero
+    eyebrow="Work"
+    title={caseStudy.data.title}
+    description={caseStudy.data.summary}
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">Industry</p>
+      <h2>{caseStudy.data.sector}</h2>
+      <ul class="metric-list">
+        <li class="metric-pill">{caseStudy.data.timeframe}</li>
+        {relatedServices.map((service) => (
+          <li class="metric-pill">{service.data.title}</li>
+        ))}
+      </ul>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="detail-shell">
+      <article class="detail-content panel">
+        <p class="eyebrow">Challenge</p>
+        <h2>What had to change.</h2>
+        <p>{caseStudy.data.challenge}</p>
+      </article>
+      <aside class="detail-sidebar panel">
+        <p class="eyebrow">Results</p>
+        <ul>
+          {caseStudy.data.metrics.map((metric) => (
+            <li>{metric.label}: {metric.value}</li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card panel">
+        <p class="eyebrow">Strategy</p>
+        <h2>How the plan was framed.</h2>
+        <p>{caseStudy.data.strategy}</p>
+      </article>
+      <article class="section-card panel">
+        <p class="eyebrow">Execution</p>
+        <h2>How the campaign moved.</h2>
+        <p>{caseStudy.data.execution}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <article class="section-card panel">
+      <p class="eyebrow">Results</p>
+      <h2>What the work produced.</h2>
+      <p>{caseStudy.data.results}</p>
+    </article>
+  </section>
+
+  {relatedServices.length > 0 ? (
+    <section class="section">
+      <article class="section-card panel">
+        <p class="eyebrow">Related services</p>
+        <h2>Where this work connects back to the service mix.</h2>
+        <div class="button-row">
+          {relatedServices.map((service) => (
+            <a class="button button-ghost" href={`/services/${service.data.slug}`}>
+              {service.data.title}
+            </a>
+          ))}
+        </div>
+      </article>
+    </section>
+  ) : null}
+
+  <section class="section">
+    <article class="section-card panel">
+      <p class="eyebrow">CTA</p>
+      <h2>Need this kind of structure around your next campaign?</h2>
+      <p>
+        Use the intake form to share context, then schedule the strategy session to align on
+        scope, timing, and the right service mix.
+      </p>
+      <div class="button-row">
+        <a class="button" href="/contact">Start the intake</a>
+        <a class="button button-ghost" href={settings.bookingUrl} target="_blank" rel="noreferrer">
+          Book a Strategy Session
+        </a>
+      </div>
+    </article>
+  </section>
+</BaseLayout>

@@ -1,0 +1,88 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getSingleton } from '../../lib/content';
+import {
+  buildArticleSchema,
+  buildOrganizationSchema,
+  withTitleTemplate,
+} from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const insights = await getCollection('insights');
+  return insights.map((insight) => ({
+    params: { slug: insight.data.slug },
+    props: { insight },
+  }));
+}
+
+const { insight } = Astro.props;
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const { Content } = await render(insight);
+const title = withTitleTemplate(insight.data.title, seo.titleTemplate);
+const description = insight.data.metaDescription;
+const pathname = `/insights/${insight.data.slug}`;
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
+const schemas = [
+  buildOrganizationSchema(settings),
+  buildArticleSchema(
+    {
+      title: insight.data.title,
+      category: insight.data.category,
+      excerpt: insight.data.excerpt,
+      author: insight.data.author,
+      publishDate: insight.data.publishDate,
+    },
+    pathname,
+  ),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath={pathname}
+  ogImage={insight.data.image}
+  ogType="article"
+  keywords={[insight.data.category, ...seo.articleKeywords]}
+  schemas={schemas}
+  settings={settings}
+>
+  <PageHero
+    eyebrow={insight.data.category}
+    title={insight.data.title}
+    description={insight.data.excerpt}
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">Published</p>
+      <h2>{dateFormatter.format(new Date(insight.data.publishDate))}</h2>
+      <p>{insight.data.author}</p>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="article-shell">
+      <article class="detail-content panel prose">
+        <Content />
+      </article>
+      <aside class="article-sidebar panel">
+        <p class="eyebrow">Next step</p>
+        <h2>Turn the insight into a plan.</h2>
+        <p>
+          If the issue matches what your team is facing, use the intake flow and strategy session
+          to scope the right level of support.
+        </p>
+        <div class="button-row">
+          <a class="button" href="/contact">Start the intake</a>
+          <a class="button button-ghost" href="/work">View work</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

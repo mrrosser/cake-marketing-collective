@@ -1,0 +1,374 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getSingleton, sortByOrder } from '../../lib/content';
+import {
+  buildFaqSchema,
+  buildMarketingAgencySchema,
+  buildOrganizationSchema,
+  buildProfessionalServiceSchema,
+} from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.data.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const city = settings.primaryCity || 'Shreveport';
+const caseStudies = sortByOrder(await getCollection('caseStudies'));
+const services = sortByOrder(await getCollection('services'));
+const featuredCase = caseStudies[0];
+const relatedServices = services.filter((entry) =>
+  (service.data.internalLinks ?? []).includes(entry.data.slug),
+);
+type ServiceProfile = {
+  heroTitle: string;
+  whoItsFor: string;
+  faqs: { question: string; answer: string }[];
+};
+
+const serviceProfiles: Record<string, ServiceProfile> = {
+  'performance-marketing': {
+    heroTitle: `Performance Marketing Agency in ${city}`,
+    whoItsFor:
+      'Brands already spending on acquisition and needing better funnel alignment, tighter creative-to-landing-page continuity, and more defensible reporting.',
+    faqs: [
+      {
+        question: 'What does performance marketing usually include?',
+        answer:
+          'It usually includes paid channel structure, audience planning, offer alignment, landing page coordination, testing rhythm, and reporting tied to conversion signals.',
+      },
+      {
+        question: 'When should a brand invest in performance marketing support?',
+        answer:
+          'It makes sense when paid spend is already happening or about to scale, but the return picture is inconsistent, expensive, or unclear.',
+      },
+      {
+        question: 'How does this connect to the rest of the site and funnel?',
+        answer:
+          'Paid works better when the offer, page structure, tracking, and follow-up path are aligned. That is why this service links closely with SEO, email, and brand/web work.',
+      },
+    ],
+  },
+  'seo-search-growth': {
+    heroTitle: `SEO Agency in ${city}`,
+    whoItsFor:
+      'Brands that need stronger search visibility, cleaner site structure, and content paths that support discovery without relying only on paid traffic.',
+    faqs: [
+      {
+        question: 'What is included in SEO and search growth work?',
+        answer:
+          'The work usually covers technical cleanup, on-page structure, service page positioning, internal linking, content planning, and search visibility tied to real business intent.',
+      },
+      {
+        question: 'How long does SEO take to show traction?',
+        answer:
+          'SEO is cumulative. Early structural improvements can help quickly, but meaningful authority and ranking gains come from consistent execution over time.',
+      },
+      {
+        question: 'How does SEO connect to other services?',
+        answer:
+          'SEO works best when brand messaging, web structure, content production, and conversion paths are already moving together.',
+      },
+    ],
+  },
+  'email-marketing-automation': {
+    heroTitle: `Email Marketing Agency in ${city}`,
+    whoItsFor:
+      'Brands with leads, customers, or event audiences already in motion who need stronger follow-up, conversion sequences, and retention systems.',
+    faqs: [
+      {
+        question: 'What does email marketing support cover?',
+        answer:
+          'It covers lifecycle planning, automated follow-up, campaign structure, message flow, and the systems that keep leads from stalling after first contact.',
+      },
+      {
+        question: 'Is this only for ecommerce brands?',
+        answer:
+          'No. It is useful anywhere a business has audience attention to capture, nurture, or re-engage across longer decision cycles.',
+      },
+      {
+        question: 'Why does email matter in an integrated marketing system?',
+        answer:
+          'It protects demand that paid, search, and experiential work already created, which makes the whole growth system more efficient.',
+      },
+    ],
+  },
+  'branding-web': {
+    heroTitle: `Brand and Web Strategy in ${city}`,
+    whoItsFor:
+      'Brands whose story, site structure, or conversion path feels unclear enough to slow down trust and action.',
+    faqs: [
+      {
+        question: 'What is the focus of brand and web strategy work?',
+        answer:
+          'The focus is positioning, message hierarchy, page structure, conversion architecture, and digital clarity that helps the right buyers move.',
+      },
+      {
+        question: 'When is this the right first service?',
+        answer:
+          'It is often the right starting point when marketing channels exist, but the brand story and website are still creating friction.',
+      },
+      {
+        question: 'How does this affect performance and SEO?',
+        answer:
+          'A clearer site improves landing page performance, internal linking, search relevance, and the trust signals that paid media depends on.',
+      },
+    ],
+  },
+  'content-production': {
+    heroTitle: `Content Production Agency in ${city}`,
+    whoItsFor:
+      'Brands that need stronger storytelling, reusable campaign assets, and content that supports both visibility and conversion.',
+    faqs: [
+      {
+        question: 'What does content production include?',
+        answer:
+          'It can include campaign messaging, creative concepts, production planning, content capture, and asset systems designed for reuse across channels.',
+      },
+      {
+        question: 'How does content production support revenue?',
+        answer:
+          'The right assets improve paid performance, increase brand clarity, strengthen follow-up, and create proof that travels beyond one launch or event.',
+      },
+      {
+        question: 'Does this connect to experiential and social work?',
+        answer:
+          'Yes. Content becomes more valuable when it is planned to serve live experiences, digital campaigns, and post-event conversion paths together.',
+      },
+    ],
+  },
+  'social-media-management': {
+    heroTitle: `Social Media Marketing Agency in ${city}`,
+    whoItsFor:
+      'Brands that need a more disciplined social system with stronger planning, better campaign coordination, and clearer brand consistency.',
+    faqs: [
+      {
+        question: 'What is included in social media management?',
+        answer:
+          'It usually includes editorial planning, platform-specific pacing, campaign alignment, creative direction, and message consistency across posts.',
+      },
+      {
+        question: 'How does social work connect to the broader marketing system?',
+        answer:
+          'Social is stronger when it supports search, paid, content, and experiential work instead of operating as a disconnected content stream.',
+      },
+      {
+        question: 'Is this just about posting more often?',
+        answer:
+          'No. The goal is better structure, stronger alignment, and content that supports demand generation instead of adding noise.',
+      },
+    ],
+  },
+  'experiential-marketing': {
+    heroTitle: `Experiential Marketing Agency in ${city}`,
+    whoItsFor:
+      'Brands, events, and partnerships that need live experiences to create real-world impact and digital afterlife at the same time.',
+    faqs: [
+      {
+        question: 'What does experiential marketing support include?',
+        answer:
+          'It includes concept development, audience journey planning, partner integration, activation structure, and the digital follow-through that extends the value of the event.',
+      },
+      {
+        question: 'Why does experiential work need digital planning too?',
+        answer:
+          'Because the best live moments do not end when the room clears. They create proof, content, and demand that can continue driving attention and action.',
+      },
+      {
+        question: 'Who benefits most from experiential marketing?',
+        answer:
+          'It is strongest for brands, cultural events, and partners that need memorable audience moments and measurable amplification beyond the physical experience.',
+      },
+    ],
+  },
+  'integrated-growth': {
+    heroTitle: `Integrated Marketing Agency in ${city}`,
+    whoItsFor:
+      'Brands that already know the real problem sits between channels and need a clearer operating system across acquisition, conversion, content, and experience.',
+    faqs: [
+      {
+        question: 'What is integrated growth support?',
+        answer:
+          'It is strategic oversight that connects channels, teams, offers, and execution rhythms so the whole system produces less drag and more momentum.',
+      },
+      {
+        question: 'When is integrated growth the right fit?',
+        answer:
+          'It is the right fit when separate tactics exist, but the brand still lacks cohesion, velocity, and clear revenue movement.',
+      },
+      {
+        question: 'How does integrated growth differ from one-channel support?',
+        answer:
+          'One-channel support improves a single lane. Integrated growth addresses the handoffs between lanes so performance compounds instead of leaking.',
+      },
+    ],
+  },
+};
+const profile = serviceProfiles[service.data.slug] ?? {
+  heroTitle: `${service.data.title} in ${city}`,
+  whoItsFor:
+    'Brands that need cleaner structure, stronger conversion support, and service work that connects back to a broader growth system.',
+  faqs: [
+    {
+      question: `What does ${service.data.title.toLowerCase()} usually include?`,
+      answer:
+        'It includes strategy, execution support, and the operational pieces needed to move from scattered activity into a cleaner system.',
+    },
+    {
+      question: `Who is ${service.data.title.toLowerCase()} best for?`,
+      answer:
+        'It is best for brands that know this area is affecting revenue, visibility, or conversion and need a more disciplined approach.',
+    },
+    {
+      question: `How does ${service.data.title.toLowerCase()} connect to other services?`,
+      answer:
+        'It works best when connected to the rest of the marketing system instead of treated as an isolated tactic.',
+    },
+  ],
+};
+const title = `${profile.heroTitle} | Cake Marketing Collective`;
+const description = service.data.summary;
+const processSummary = `${service.data.process[0]}. ${service.data.process[1]}. ${service.data.process[2]}.`;
+const schemas = [
+  buildOrganizationSchema(settings),
+  buildMarketingAgencySchema(settings),
+  buildProfessionalServiceSchema(settings, [service.data]),
+  buildFaqSchema(profile.faqs),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath={`/services/${service.data.slug}`}
+  ogImage={seo.defaultOgImage}
+  keywords={[profile.heroTitle, ...seo.serviceKeywords, ...seo.geoKeywords]}
+  schemas={schemas}
+  settings={settings}
+>
+  <PageHero
+    eyebrow="Service Detail"
+    title={profile.heroTitle}
+    description={service.data.summary}
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">Primary outcome</p>
+      <h2>What this work should change.</h2>
+      <p>{service.data.outcome}</p>
+      <p><strong>Primary market:</strong> {city}, {settings.primaryState || 'Louisiana'} and beyond.</p>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="detail-shell">
+      <article class="detail-content panel">
+        <p class="eyebrow">What it is</p>
+        <h2>What this service actually covers.</h2>
+        <p>{service.data.detail}</p>
+        <p>{processSummary}</p>
+      </article>
+      <aside class="detail-sidebar panel">
+        <p class="eyebrow">What we deliver</p>
+        <ul>
+          {service.data.deliverables.map((item) => <li>{item}</li>)}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card panel">
+        <p class="eyebrow">Why it works</p>
+        <h2>Why this service creates leverage.</h2>
+        <p>{service.data.outcome}</p>
+        <p>
+          The work performs better when the offer, audience, execution, and follow-through are
+          aligned instead of left to operate as separate guesses.
+        </p>
+      </article>
+      <article class="section-card panel">
+        <p class="eyebrow">Who it's for</p>
+        <h2>Where this tends to fit best.</h2>
+        <p>{profile.whoItsFor}</p>
+        <ul class="tag-list">
+          {service.data.stack.map((item) => (
+            <li class="tag-pill">{item}</li>
+          ))}
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <article class="section-card panel">
+        <p class="eyebrow">FAQs</p>
+        <h2>Questions that usually come up first.</h2>
+        <div class="faq-list">
+        {profile.faqs.map((faq: ServiceProfile['faqs'][number]) => (
+          <details class="faq-item panel">
+            <summary>{faq.question}</summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </article>
+  </section>
+
+  {relatedServices.length > 0 ? (
+    <section class="section">
+      <article class="section-card panel">
+        <p class="eyebrow">Related services</p>
+        <h2>Keep the system connected.</h2>
+        <div class="button-row">
+          {relatedServices.map((entry) => (
+            <a class="button button-ghost" href={`/services/${entry.data.slug}`}>
+              {entry.data.title}
+            </a>
+          ))}
+        </div>
+      </article>
+    </section>
+  ) : null}
+
+  {featuredCase ? (
+    <section class="section">
+      <article class="section-card panel">
+        <p class="eyebrow">Related work</p>
+        <h2>{featuredCase.data.title}</h2>
+        <p>{featuredCase.data.summary}</p>
+        <div class="button-row">
+          <a class="button button-ghost" href="/work">
+            View work
+          </a>
+        </div>
+      </article>
+    </section>
+  ) : null}
+
+  <section class="section">
+    <article class="section-card panel">
+      <p class="eyebrow">Contact</p>
+      <h2>Ready to scope this service?</h2>
+      <p>
+        Send the business context through the intake form first, then use the strategy session
+        to decide scope, timing, and whether this service should stand alone or connect to a
+        bigger reset.
+      </p>
+      <div class="button-row">
+        <a class="button" href="/contact">Start the intake</a>
+        <a class="button button-ghost" href={settings.bookingUrl} target="_blank" rel="noreferrer">
+          Book a Strategy Session
+        </a>
+      </div>
+    </article>
+  </section>
+</BaseLayout>

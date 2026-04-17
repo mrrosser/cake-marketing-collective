@@ -7,15 +7,18 @@
     <style>
       :root {
         color-scheme: dark;
-        --bg: #050505;
-        --panel: rgba(17, 16, 24, 0.72);
-        --panel-strong: rgba(14, 12, 21, 0.9);
-        --text: #f7f2f8;
-        --muted: rgba(247, 242, 248, 0.72);
-        --primary: #954cf6;
+        --bg: #050507;
+        --bg-alt: #0e0e13;
+        --text: #f5f5f5;
+        --muted: rgba(245, 245, 245, 0.72);
+        --primary: #5e17eb;
         --secondary: #cb6ce6;
-        --line: rgba(255, 255, 255, 0.16);
-        --shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
+        --line: rgba(255, 255, 255, 0.12);
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.34);
+        --mx: 50%;
+        --my: 50%;
+        --rx: -8deg;
+        --ry: 10deg;
       }
 
       * {
@@ -27,187 +30,298 @@
         min-height: 100vh;
         overflow: hidden;
         background:
-          radial-gradient(circle at 18% 22%, rgba(203, 108, 230, 0.25), transparent 24%),
-          radial-gradient(circle at 80% 14%, rgba(149, 76, 246, 0.28), transparent 18%),
-          radial-gradient(circle at 72% 78%, rgba(203, 108, 230, 0.18), transparent 26%),
-          linear-gradient(180deg, #08070f 0%, #050505 100%);
+          radial-gradient(circle at 18% 16%, rgba(203, 108, 230, 0.18), transparent 24%),
+          radial-gradient(circle at 82% 12%, rgba(94, 23, 235, 0.2), transparent 18%),
+          linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
         color: var(--text);
-        font-family: "Avenir Next", "Segoe UI", sans-serif;
+        font-family: "Satoshi", "Inter", "Segoe UI", sans-serif;
       }
 
-      .stage {
+      .scene {
         position: relative;
         width: 100%;
         height: 100vh;
+        overflow: hidden;
         isolation: isolate;
       }
 
-      .glow {
+      .scene::before {
+        content: "";
         position: absolute;
-        border-radius: 999px;
-        filter: blur(10px);
-        opacity: 0.7;
-        animation: drift 16s ease-in-out infinite;
+        inset: 0;
+        background:
+          radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, 0.14), transparent 22%),
+          radial-gradient(circle at center, transparent 42%, rgba(0, 0, 0, 0.28) 100%);
+        pointer-events: none;
       }
 
-      .glow-a {
-        inset: 8% auto auto 8%;
-        width: 220px;
-        height: 220px;
-        background: radial-gradient(circle, rgba(203, 108, 230, 0.72), rgba(203, 108, 230, 0));
-      }
-
-      .glow-b {
-        inset: auto 10% 8% auto;
-        width: 260px;
-        height: 260px;
-        background: radial-gradient(circle, rgba(149, 76, 246, 0.72), rgba(149, 76, 246, 0));
-        animation-duration: 18s;
+      .grid,
+      .noise {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
       }
 
       .grid {
-        position: absolute;
-        inset: 0;
         background-image:
           linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
         background-size: 48px 48px;
-        mask-image: radial-gradient(circle at center, #000 52%, transparent 88%);
+        mask-image: radial-gradient(circle at center, #000 46%, transparent 88%);
       }
 
-      .core {
+      .noise {
+        opacity: 0.08;
+        background-image:
+          radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.4) 0 0.4px, transparent 0.6px),
+          radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.32) 0 0.4px, transparent 0.7px),
+          radial-gradient(circle at 35% 78%, rgba(255, 255, 255, 0.3) 0 0.4px, transparent 0.7px);
+        background-size: 120px 120px, 160px 160px, 140px 140px;
+      }
+
+      .assembly {
         position: absolute;
         inset: 50% auto auto 50%;
-        width: min(52vw, 360px);
-        aspect-ratio: 1;
-        transform: translate(-50%, -46%) rotateX(65deg) rotateZ(-18deg);
-        border-radius: 28%;
-        background:
-          linear-gradient(135deg, rgba(149, 76, 246, 0.16), rgba(203, 108, 230, 0.04)),
-          rgba(8, 8, 14, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        box-shadow:
-          0 20px 80px rgba(149, 76, 246, 0.22),
-          inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+        width: min(72vw, 560px);
+        height: min(72vw, 560px);
+        transform: translate(-50%, -52%) rotateX(var(--rx)) rotateY(var(--ry));
+        transform-style: preserve-3d;
+        transition: transform 160ms ease-out;
+      }
+
+      .halo {
+        position: absolute;
+        inset: 50% auto auto 50%;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      .halo-a {
+        width: 100%;
+        height: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 80px rgba(94, 23, 235, 0.16);
+      }
+
+      .halo-b {
+        width: 78%;
+        height: 78%;
+        border: 1px dashed rgba(255, 255, 255, 0.12);
+        animation: spin 26s linear infinite;
       }
 
       .ring {
         position: absolute;
         inset: 50% auto auto 50%;
-        border: 1px solid rgba(255, 255, 255, 0.16);
+        width: 88%;
+        height: 88%;
         border-radius: 50%;
-        transform-origin: center;
+        border: 1px solid rgba(203, 108, 230, 0.18);
+        transform: translate(-50%, -50%) rotateX(70deg);
       }
 
-      .ring-a {
-        width: min(64vw, 430px);
-        height: min(64vw, 430px);
-        transform: translate(-50%, -50%) rotateX(72deg) rotateZ(14deg);
-        animation: spin 18s linear infinite;
-      }
-
-      .ring-b {
-        width: min(46vw, 300px);
-        height: min(46vw, 300px);
-        transform: translate(-50%, -50%) rotateX(72deg) rotateZ(-18deg);
-        animation: spin-reverse 12s linear infinite;
-      }
-
-      .beam {
+      .ring::before,
+      .ring::after {
+        content: "";
         position: absolute;
-        inset: 50% 12% auto 12%;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.72), transparent);
-        opacity: 0.82;
+        inset: 0;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
-      .card {
+      .ring::before {
+        transform: rotate(60deg);
+      }
+
+      .ring::after {
+        transform: rotate(120deg);
+      }
+
+      .platform {
         position: absolute;
-        min-width: 132px;
-        padding: 14px 16px;
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        background: linear-gradient(180deg, rgba(16, 14, 24, 0.92), rgba(8, 7, 12, 0.72));
+        inset: 50% auto auto 50%;
+        width: 48%;
+        aspect-ratio: 1;
+        transform-style: preserve-3d;
+        transform: translate(-50%, -50%);
+      }
+
+      .plate {
+        position: absolute;
+        inset: 0;
+        border-radius: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: linear-gradient(180deg, rgba(28, 28, 36, 0.94), rgba(10, 10, 14, 0.94));
         box-shadow: var(--shadow);
-        backdrop-filter: blur(14px);
       }
 
-      .card small {
-        display: block;
-        margin-bottom: 4px;
+      .plate-back {
+        transform: translate3d(-18px, -18px, -40px) rotateZ(-6deg);
+        opacity: 0.42;
+      }
+
+      .plate-mid {
+        transform: translate3d(18px, 16px, -18px) rotateZ(5deg);
+        opacity: 0.58;
+      }
+
+      .plate-front {
+        padding: 24px;
+        transform: translate3d(0, 0, 30px);
+        display: grid;
+        align-content: space-between;
+        background:
+          linear-gradient(135deg, rgba(94, 23, 235, 0.26), rgba(203, 108, 230, 0.08)),
+          linear-gradient(180deg, rgba(27, 27, 34, 0.96), rgba(11, 11, 14, 0.98));
+      }
+
+      .plate-front small {
         color: var(--secondary);
-        font-size: 0.68rem;
-        letter-spacing: 0.16em;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
       }
 
-      .card strong {
+      .plate-front strong {
         display: block;
-        font-size: 1rem;
-        font-weight: 600;
-        letter-spacing: 0.04em;
+        margin-top: 12px;
+        font-size: clamp(1.4rem, 2.6vw, 2rem);
+        line-height: 1.05;
       }
 
-      .card p {
+      .plate-front p {
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.55;
+      }
+
+      .services {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .services span {
+        padding: 7px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.04);
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .node {
+        position: absolute;
+        width: 120px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(18, 18, 24, 0.94), rgba(10, 10, 14, 0.88));
+        box-shadow: var(--shadow);
+        transform-style: preserve-3d;
+      }
+
+      .node small {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--secondary);
+        font-size: 0.66rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .node strong {
+        display: block;
+        font-size: 0.94rem;
+        line-height: 1.2;
+      }
+
+      .node p {
         margin: 6px 0 0;
         color: var(--muted);
-        font-size: 0.84rem;
-        line-height: 1.45;
+        font-size: 0.76rem;
+        line-height: 1.4;
       }
 
-      .card-story {
-        top: 11%;
-        left: 8%;
-        animation: float-card 12s ease-in-out infinite;
+      .node-search {
+        top: 8%;
+        left: 9%;
+        transform: translate3d(-4px, 0, 36px);
+        animation: float-a 8s ease-in-out infinite;
       }
 
-      .card-room {
-        top: 18%;
-        right: 9%;
-        animation: float-card 14s ease-in-out infinite reverse;
+      .node-paid {
+        top: 14%;
+        right: 6%;
+        transform: translate3d(12px, -8px, 54px);
+        animation: float-b 9s ease-in-out infinite;
       }
 
-      .card-sponsor {
-        right: 14%;
-        bottom: 15%;
-        animation: float-card 16s ease-in-out infinite;
+      .node-email {
+        right: 4%;
+        bottom: 18%;
+        transform: translate3d(10px, 6px, 42px);
+        animation: float-c 10s ease-in-out infinite;
       }
 
-      .card-community {
-        bottom: 12%;
-        left: 10%;
-        animation: float-card 15s ease-in-out infinite reverse;
+      .node-social {
+        left: 6%;
+        bottom: 22%;
+        transform: translate3d(-12px, 10px, 46px);
+        animation: float-b 11s ease-in-out infinite reverse;
       }
 
-      .pulse {
+      .connector {
         position: absolute;
         inset: 50% auto auto 50%;
-        width: 16px;
-        height: 16px;
-        transform: translate(-50%, -50%);
-        border-radius: 999px;
-        background: linear-gradient(135deg, var(--secondary), var(--primary));
-        box-shadow: 0 0 0 0 rgba(203, 108, 230, 0.42);
-        animation: pulse 3s ease-out infinite;
+        height: 1px;
+        transform-origin: left center;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.54), transparent);
+        opacity: 0.76;
+      }
+
+      .connector-search {
+        width: 160px;
+        transform: translate(-40px, -54px) rotate(-150deg);
+      }
+
+      .connector-paid {
+        width: 178px;
+        transform: translate(34px, -44px) rotate(-30deg);
+      }
+
+      .connector-email {
+        width: 174px;
+        transform: translate(28px, 36px) rotate(34deg);
+      }
+
+      .connector-social {
+        width: 164px;
+        transform: translate(-38px, 48px) rotate(146deg);
       }
 
       .caption {
         position: absolute;
-        left: 24px;
+        left: 26px;
         bottom: 24px;
-        display: grid;
-        gap: 8px;
-        max-width: 240px;
-        padding: 16px 18px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 18px;
-        background: var(--panel);
+        max-width: 260px;
+        padding: 18px 20px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: linear-gradient(180deg, rgba(18, 18, 24, 0.92), rgba(10, 10, 14, 0.86));
         box-shadow: var(--shadow);
       }
 
       .caption strong {
-        font-size: 0.9rem;
-        letter-spacing: 0.12em;
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.86rem;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
       }
 
@@ -217,67 +331,66 @@
         line-height: 1.5;
       }
 
-      @keyframes drift {
-        0%,
-        100% {
-          transform: translate3d(0, 0, 0) scale(1);
-        }
-
-        50% {
-          transform: translate3d(18px, -22px, 0) scale(1.08);
-        }
-      }
-
       @keyframes spin {
         from {
-          transform: translate(-50%, -50%) rotateX(72deg) rotateZ(0deg);
+          transform: translate(-50%, -50%) rotate(0deg);
         }
 
         to {
-          transform: translate(-50%, -50%) rotateX(72deg) rotateZ(360deg);
+          transform: translate(-50%, -50%) rotate(360deg);
         }
       }
 
-      @keyframes spin-reverse {
-        from {
-          transform: translate(-50%, -50%) rotateX(72deg) rotateZ(360deg);
-        }
-
-        to {
-          transform: translate(-50%, -50%) rotateX(72deg) rotateZ(0deg);
-        }
-      }
-
-      @keyframes float-card {
+      @keyframes float-a {
         0%,
         100% {
-          transform: translate3d(0, 0, 0);
+          transform: translate3d(-4px, 0, 36px);
         }
 
         50% {
-          transform: translate3d(0, -14px, 0);
+          transform: translate3d(4px, -10px, 44px);
         }
       }
 
-      @keyframes pulse {
-        0% {
-          box-shadow: 0 0 0 0 rgba(203, 108, 230, 0.4);
+      @keyframes float-b {
+        0%,
+        100% {
+          transform: translate3d(12px, -8px, 54px);
         }
 
-        80%,
+        50% {
+          transform: translate3d(4px, 8px, 44px);
+        }
+      }
+
+      @keyframes float-c {
+        0%,
         100% {
-          box-shadow: 0 0 0 34px rgba(203, 108, 230, 0);
+          transform: translate3d(10px, 6px, 42px);
+        }
+
+        50% {
+          transform: translate3d(-4px, -8px, 52px);
         }
       }
 
       @media (max-width: 720px) {
-        .card {
-          min-width: 104px;
-          padding: 12px 14px;
+        .assembly {
+          width: min(88vw, 460px);
+          height: min(88vw, 460px);
         }
 
-        .card p {
+        .node {
+          width: 104px;
+          padding: 10px 12px;
+        }
+
+        .node p {
           display: none;
+        }
+
+        .plate-front {
+          padding: 18px;
         }
 
         .caption {
@@ -299,44 +412,106 @@
     </style>
   </head>
   <body>
-    <main class="stage" aria-label="Branded ambient scene">
+    <main class="scene" aria-label="Interactive brand systems scene">
       <div class="grid" aria-hidden="true"></div>
-      <div class="glow glow-a" aria-hidden="true"></div>
-      <div class="glow glow-b" aria-hidden="true"></div>
-      <div class="beam" aria-hidden="true"></div>
-      <div class="ring ring-a" aria-hidden="true"></div>
-      <div class="ring ring-b" aria-hidden="true"></div>
-      <div class="core" aria-hidden="true"></div>
-      <div class="pulse" aria-hidden="true"></div>
+      <div class="noise" aria-hidden="true"></div>
 
-      <article class="card card-story">
-        <small>Story</small>
-        <strong>Brand narrative</strong>
-        <p>Positioning that feels lived in, not generic.</p>
-      </article>
+      <section class="assembly" aria-hidden="true">
+        <div class="halo halo-a"></div>
+        <div class="halo halo-b"></div>
+        <div class="ring"></div>
 
-      <article class="card card-room">
-        <small>Room</small>
-        <strong>Experiential design</strong>
-        <p>Atmosphere, flow, and surfaces people remember.</p>
-      </article>
+        <div class="connector connector-search"></div>
+        <div class="connector connector-paid"></div>
+        <div class="connector connector-email"></div>
+        <div class="connector connector-social"></div>
 
-      <article class="card card-sponsor">
-        <small>Partners</small>
-        <strong>Sponsorship logic</strong>
-        <p>Packages and partner stories built for the real audience.</p>
-      </article>
+        <div class="platform">
+          <div class="plate plate-back"></div>
+          <div class="plate plate-mid"></div>
+          <article class="plate plate-front">
+            <div>
+              <small>CMC</small>
+              <strong>One strategic lead. Fewer moving parts fighting each other.</strong>
+              <p>
+                Search, paid, content, lifecycle, and experiential work stacked into one
+                system instead of five unrelated tasks.
+              </p>
+            </div>
+            <div class="services">
+              <span>Search</span>
+              <span>Paid</span>
+              <span>Email</span>
+              <span>Content</span>
+            </div>
+          </article>
+        </div>
 
-      <article class="card card-community">
-        <small>Audience</small>
-        <strong>Cultural fluency</strong>
-        <p>Community-first touchpoints across digital and in-person moments.</p>
-      </article>
+        <article class="node node-search">
+          <small>Signal</small>
+          <strong>Search</strong>
+          <p>Stronger discoverability before outreach has to do all the work.</p>
+        </article>
+
+        <article class="node node-paid">
+          <small>Demand</small>
+          <strong>Paid media</strong>
+          <p>Spend tied to better pages, tighter offers, and cleaner follow-up.</p>
+        </article>
+
+        <article class="node node-email">
+          <small>Follow-up</small>
+          <strong>Email</strong>
+          <p>Sequences that keep attention from leaking after the first action.</p>
+        </article>
+
+        <article class="node node-social">
+          <small>Presence</small>
+          <strong>Social</strong>
+          <p>Channel rhythm that supports the business instead of adding noise.</p>
+        </article>
+      </section>
 
       <section class="caption">
-        <strong>Cake Marketing</strong>
-        <span>Self-hosted hero scene so launch does not block on an external 3D export.</span>
+        <strong>System, not spectacle</strong>
+        <span>
+          A lightweight 3D hero built to feel tactile and dimensional without slowing down the
+          page or turning the site into a demo.
+        </span>
       </section>
     </main>
+
+    <script>
+      (() => {
+        const root = document.documentElement;
+        const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+        if (media.matches) {
+          return;
+        }
+
+        const update = (event) => {
+          const x = event.clientX / window.innerWidth;
+          const y = event.clientY / window.innerHeight;
+          const rx = (-10 + y * 8).toFixed(2) + 'deg';
+          const ry = (-14 + x * 28).toFixed(2) + 'deg';
+
+          root.style.setProperty('--mx', `${(x * 100).toFixed(2)}%`);
+          root.style.setProperty('--my', `${(y * 100).toFixed(2)}%`);
+          root.style.setProperty('--rx', rx);
+          root.style.setProperty('--ry', ry);
+        };
+
+        const reset = () => {
+          root.style.setProperty('--mx', '50%');
+          root.style.setProperty('--my', '50%');
+          root.style.setProperty('--rx', '-8deg');
+          root.style.setProperty('--ry', '10deg');
+        };
+
+        window.addEventListener('pointermove', update, { passive: true });
+        window.addEventListener('pointerleave', reset, { passive: true });
+      })();
+    </script>
   </body>
 </html>

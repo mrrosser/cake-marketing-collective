@@ -2,55 +2,75 @@
 interface Props {
   eyebrow: string;
   title: string;
+  subheadline: string;
   copy: string;
   primaryLabel: string;
   primaryHref: string;
   secondaryLabel: string;
   secondaryHref: string;
   scenePath?: string;
+  heroImage?: string;
+  heroImageAlt?: string;
 }
 
 const {
   eyebrow,
   title,
+  subheadline,
   copy,
   primaryLabel,
   primaryHref,
   secondaryLabel,
   secondaryHref,
   scenePath = '',
+  heroImage = '',
+  heroImageAlt = 'Cake Marketing Collective founder portrait',
 } = Astro.props;
 
 const hasScene = Boolean(scenePath);
+const hasHeroImage = Boolean(heroImage);
+const primaryExternal = primaryHref.startsWith('http');
 ---
 
-<section class="hero">
-  <div class="hero-copy">
+<section class="home-hero">
+  <div class="hero-copy panel">
     <p class="eyebrow">{eyebrow}</p>
     <h1>{title}</h1>
+    <p class="hero-subheadline">{subheadline}</p>
     <p class="hero-body">{copy}</p>
     <div class="button-row">
-      <a class="button" href={primaryHref}>{primaryLabel}</a>
+      <a
+        class="button"
+        href={primaryHref}
+        target={primaryExternal ? '_blank' : undefined}
+        rel={primaryExternal ? 'noreferrer' : undefined}
+      >
+        {primaryLabel}
+      </a>
       <a class="button button-ghost" href={secondaryHref}>{secondaryLabel}</a>
     </div>
   </div>
-  <div class:list={['hero-visual', hasScene ? 'scene-ready' : 'scene-fallback']}>
-    {hasScene ? (
-      <iframe
-        src={scenePath}
-        title="Cake Marketing Collective hero scene"
-        loading="lazy"
-      />
-    ) : (
-      <div class="scene-fallback-shell" aria-hidden="true">
-        <div class="scene-orb scene-orb-large"></div>
-        <div class="scene-orb scene-orb-small"></div>
-        <div class="scene-line"></div>
-        <div class="scene-caption">
-          <span>Hero scene unavailable</span>
-          <span>The branded fallback still keeps the launch moving.</span>
-        </div>
+  <div class="hero-surface panel">
+    {hasHeroImage ? (
+      <div class="hero-portrait-frame">
+        <img class="hero-portrait" src={heroImage} alt={heroImageAlt} />
       </div>
-    )}
+    ) : null}
+    {hasScene ? (
+      <div class="scene-frame">
+        <iframe
+          src={scenePath}
+          title="Cake Marketing Collective hero scene"
+          loading="lazy"
+        />
+      </div>
+    ) : null}
+    <div class="surface-note">
+      <strong>Built for brands that need structure, clarity, and a system that can scale.</strong>
+      <p>
+        Public intake, strategy routing, and the internal studio are now being shaped as one
+        connected platform instead of separate patched-together tools.
+      </p>
+    </div>
   </div>
 </section>

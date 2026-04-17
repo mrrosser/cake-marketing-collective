@@ -1,18 +1,30 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
 import { getSingleton } from '../lib/content';
 import {
+  buildMarketingAgencySchema,
   buildOrganizationSchema,
   buildPersonSchema,
-  withTitleTemplate,
 } from '../lib/seo';
 
 const settings = (await getSingleton('siteSettings')).data;
-const seo = (await getSingleton('seoDefaults')).data;
 const founder = (await getSingleton('founder')).data;
-const title = withTitleTemplate('About Cake Douglas', seo.titleTemplate);
-const description = founder.summary;
-const schemas = [buildOrganizationSchema(settings), buildPersonSchema(founder)];
+const city = settings.primaryCity || 'Shreveport';
+const title = 'About Cake Marketing Collective | Performance & Culture-Driven Marketing';
+const description =
+  'Founded on clarity and execution, Cake Marketing Collective blends performance marketing with cultural fluency.';
+const values = [
+  'Marketing should drive revenue.',
+  'Brand should create clarity.',
+  'Culture should be respected, not borrowed.',
+  'Execution should be structured.',
+];
+const schemas = [
+  buildOrganizationSchema(settings),
+  buildMarketingAgencySchema(settings),
+  buildPersonSchema(founder),
+];
 ---
 
 <BaseLayout
@@ -20,38 +32,47 @@ const schemas = [buildOrganizationSchema(settings), buildPersonSchema(founder)];
   description={description}
   canonicalPath="/about"
   ogImage={founder.image}
-  keywords={seo.fallbackKeywords}
+  keywords={['marketing agency founder', 'Black-owned marketing agency', `creative agency in ${city}`]}
   schemas={schemas}
   settings={settings}
 >
-  <section class="page-hero">
-    <div class="page-hero-copy">
-      <p class="eyebrow">Meet the founder</p>
-      <h1>{founder.name}</h1>
-      <p class="hero-body">{founder.title} rooted in {founder.location}.</p>
-      <p>{founder.summary}</p>
-    </div>
-    <div class="page-hero-visual">
-      <img class="founder-portrait" src={founder.image} alt={`Portrait placeholder for ${founder.name}`} />
-      <p>{founder.photoCredit ? `Photo credit placeholder: ${founder.photoCredit}` : 'Approved portrait pending export from Squarespace.'}</p>
+  <PageHero
+    eyebrow="About"
+    title="Strategy First. Culture Always."
+    description={founder.summary}
+  >
+    <Fragment slot="aside">
+      <img class="founder-portrait" src={founder.image} alt="Founder of Cake Marketing Collective" />
+      <p><strong>{founder.name}</strong></p>
+      <p>{founder.title}</p>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card panel">
+        <p class="eyebrow">Meet the founder</p>
+        <h2>Performance-minded. Culture-aware. Execution-focused.</h2>
+        <p>{founder.summary}</p>
+        <p>{founder.signature}</p>
+      </article>
+      <article class="section-card panel">
+        <p class="eyebrow">Philosophy</p>
+        <h2>What shapes the work.</h2>
+        <p>{founder.philosophy}</p>
+        <p>{founder.photoCredit ? `Photo credit: ${founder.photoCredit}` : 'Founder image pending update.'}</p>
+      </article>
     </div>
   </section>
 
   <section class="section">
-    <div class="section-grid">
-      <article class="section-card">
-        <p class="eyebrow">Philosophy</p>
-        <h2>Events should carry a pulse.</h2>
-        <p>{founder.philosophy}</p>
-        <p>{founder.signature}</p>
-      </article>
-      <article class="section-card">
-        <p class="eyebrow">Background</p>
-        <h2>Culture, policy, art, and people-power.</h2>
-        <ul>
-          {founder.highlights.map((highlight) => <li>{highlight}</li>)}
-        </ul>
-      </article>
-    </div>
+    <article class="section-card panel">
+      <p class="eyebrow">What we believe</p>
+      <h2>Principles that keep the work honest.</h2>
+      <ul>{values.map((value) => <li>{value}</li>)}</ul>
+      <div class="button-row" style="margin-top: 24px;">
+        <a class="button" href="/contact">Schedule Strategy Session</a>
+      </div>
+    </article>
   </section>
 </BaseLayout>

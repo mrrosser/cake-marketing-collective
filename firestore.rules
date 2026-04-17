@@ -1,0 +1,181 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userDocPath() {
+      return /databases/$(database)/documents/users/$(request.auth.uid);
+    }
+
+    function hasUserDoc() {
+      return signedIn() && exists(userDocPath());
+    }
+
+    function userData() {
+      return get(userDocPath()).data;
+    }
+
+    function role() {
+      return hasUserDoc() ? userData().role : null;
+    }
+
+    function organizationIds() {
+      return hasUserDoc() ? userData().organizationIds : [];
+    }
+
+    function belongsToOrg(orgId) {
+      return hasUserDoc() && orgId != null && organizationIds().hasAny([orgId]);
+    }
+
+    function isInternal() {
+      return role() in ['owner', 'admin', 'team_member'];
+    }
+
+    function isClient() {
+      return role() == 'client';
+    }
+
+    function canReadOrgDocument(data) {
+      return belongsToOrg(data.organizationId) &&
+        (
+          isInternal() ||
+          (
+            isClient() &&
+            data.clientVisible == true &&
+            (
+              !data.keys().hasAny(['clientEmails']) ||
+              data.clientEmails.hasAny([request.auth.token.email])
+            )
+          )
+        );
+    }
+
+    function canWriteOrgDocument(data) {
+      return isInternal() && belongsToOrg(data.organizationId);
+    }
+
+    match /users/{userId} {
+      allow read: if signedIn() && request.auth.uid == userId;
+      allow write: if false;
+    }
+
+    match /organizations/{organizationId} {
+      allow read: if belongsToOrg(organizationId);
+      allow write: if isInternal() && belongsToOrg(organizationId);
+    }
+
+    match /clients/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if canWriteOrgDocument(request.resource.data);
+      allow update, delete: if canWriteOrgDocument(resource.data);
+    }
+
+    match /workspaces/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if canWriteOrgDocument(request.resource.data);
+      allow update, delete: if canWriteOrgDocument(resource.data);
+    }
+
+    match /boards/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if canWriteOrgDocument(request.resource.data);
+      allow update, delete: if canWriteOrgDocument(resource.data);
+    }
+
+    match /items/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if canWriteOrgDocument(request.resource.data);
+      allow update, delete: if canWriteOrgDocument(resource.data);
+    }
+
+    match /views/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if canWriteOrgDocument(request.resource.data);
+      allow update, delete: if canWriteOrgDocument(resource.data);
+    }
+
+    match /automations/{documentId} {
+      allow read: if isInternal() && belongsToOrg(resource.data.organizationId);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if isInternal() && belongsToOrg(resource.data.organizationId);
+    }
+
+    match /intakes/{documentId} {
+      allow read: if isInternal() && belongsToOrg(resource.data.organizationId);
+      allow create, update, delete: if false;
+    }
+
+    match /appointments/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if isInternal() && belongsToOrg(resource.data.organizationId);
+    }
+
+    match /stitchProjects/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if isInternal() && belongsToOrg(resource.data.organizationId);
+    }
+
+    match /tasks/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if canWriteOrgDocument(request.resource.data);
+      allow update, delete: if canWriteOrgDocument(resource.data);
+    }
+
+    match /files/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if isInternal() && belongsToOrg(resource.data.organizationId);
+    }
+
+    match /contracts/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if isInternal() && belongsToOrg(resource.data.organizationId);
+    }
+
+    match /invoices/{documentId} {
+      allow read: if canReadOrgDocument(resource.data);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if isInternal() && belongsToOrg(resource.data.organizationId);
+    }
+
+    match /activityLogs/{documentId} {
+      allow read: if isInternal() && belongsToOrg(resource.data.organizationId);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if false;
+    }
+
+    match /agentRuns/{documentId} {
+      allow read: if isInternal() && belongsToOrg(resource.data.organizationId);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if isInternal() && belongsToOrg(resource.data.organizationId);
+    }
+
+    match /integrationConfigs/{documentId} {
+      allow read: if isInternal() && belongsToOrg(resource.data.organizationId);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if isInternal() && belongsToOrg(resource.data.organizationId);
+    }
+
+    match /migrationRuns/{documentId} {
+      allow read: if isInternal() && belongsToOrg(resource.data.organizationId);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if isInternal() && belongsToOrg(resource.data.organizationId);
+    }
+
+    match /providerJobs/{documentId} {
+      allow read: if isInternal() && belongsToOrg(resource.data.organizationId);
+      allow create: if isInternal() && belongsToOrg(request.resource.data.organizationId);
+      allow update, delete: if isInternal() && belongsToOrg(resource.data.organizationId);
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

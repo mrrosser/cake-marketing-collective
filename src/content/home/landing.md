@@ -1,17 +1,41 @@
 ---
-heroEyebrow: Human intelligence-powered event marketing and brand design
-heroHeadline: Your world-building journey starts here.
-heroSubheadline: Cake Marketing Collective curates brand experiences that preserve culture, deepen belonging, and turn events into stories people carry with them.
-heroBody: We collaborate with local talent, founder-led strategy, and culturally fluent storytelling to shape launches, gatherings, and partnerships with memory, movement, and staying power.
-overviewTitle: Built for events with memory, movement, and meaning.
-overviewBody: Cake Marketing Collective exists for organizers, artists, brands, and funders who want more than a polished event. The work is about atmosphere, clarity, and the kind of audience experience that makes people feel seen the moment they enter the room.
-promises:
-  - Founder-led strategy from the first concept to the final guest impression.
-  - Sponsorship development built around alignment, value, and long-term trust.
-  - Brand systems that feel culturally rooted instead of trend-chasing.
-  - Flexible collective support across design, digital, social, and production.
-fundingTitle: Funding should feel like alignment, not extraction.
-fundingBody: We help clients shape sponsor stories, partnership packages, and value propositions that respect the people in the room while making the business case clear. The result is support that feels additive to the experience, not pasted on top of it.
-closingTitle: Ready to build a room people remember?
-closingBody: Start with the discovery call, share the shape of your event, and we will map the next right move for the brand, the audience, and the partners who need to believe in it.
+heroEyebrow: Founder-led strategy and cultural fluency
+heroHeadline: Culture-backed strategies for mission-focused brands.
+heroSubheadline: Building bold brands through cultural fluency.
+heroBody: >-
+  Cake builds the systems behind the story: strategy, content, campaigns,
+  experiences, and client journeys designed to create momentum without losing
+  what makes the brand matter.
+positioningTitle: Let’s Be Honest.
+positioningBody: >-
+  Most brands do not need more ideas. They need structure. You do not need
+  hype. You need infrastructure.
+proofPoints:
+  - 3x+ ROAS
+  - 40% Revenue Growth
+  - Integrated Multi-Channel Campaigns
+  - Experiential + Digital Amplification
+servicesTitle: Integrated Marketing Services
+servicesBody: >-
+  Performance marketing, brand and web strategy, and experiential execution
+  anchor the system. Every supporting service is designed to help revenue move
+  with less friction.
+collectiveTitle: Serving brands in Shreveport and nationally.
+collectiveBody: >-
+  Cake works with growth-focused brands locally and nationally. The location
+  matters because trust, visibility, and cultural context still shape how
+  people buy.
+caseStudiesTitle: Proof Over Promises.
+caseStudiesBody: >-
+  The work section is built to show how strategy, execution, and measurable
+  results connect in the real world instead of asking visitors to trust vague
+  claims.
+insightsTitle: Insights that make the next decision easier.
+insightsBody: >-
+  The insights library stays secondary until there is enough depth to earn the
+  attention. Services and proof lead the site first.
+contactTitle: Stop Guessing. Start Scaling.
+contactBody: >-
+  Start with the intake, then schedule the strategy session. The goal is to
+  move from uncertainty to a cleaner growth plan and a sharper next step.
 ---

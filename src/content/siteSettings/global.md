@@ -1,38 +1,46 @@
 ---
 siteName: Cake Marketing Collective
-siteTagline: Curating timeless brand experiences.
-siteDescription: Founder-led event marketing and brand design for culturally rooted events, sponsorship strategy, and community-centered brand experiences.
-primaryCtaLabel: Work With Us
-primaryCtaHref: /work-with-us
-secondaryCtaLabel: Meet Cake
-secondaryCtaHref: /about
+siteTagline: Built with culture. Backed by data.
+siteDescription: Cake Marketing Collective is an integrated marketing and experiential agency helping brands grow through performance marketing, brand strategy, content production, and culture-aware execution.
+primaryCtaLabel: Book a Strategy Session
+primaryCtaHref: https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1b2erysb3xlhK3aszk0xIlfGY3mde5PKtqnX3S2uo90SjdwwYeQDOnKt_dP0d074eiUpowId6t
+secondaryCtaLabel: View Work
+secondaryCtaHref: /work
 email: contact@cakemarketingllc.com
 bookingUrl: https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1b2erysb3xlhK3aszk0xIlfGY3mde5PKtqnX3S2uo90SjdwwYeQDOnKt_dP0d074eiUpowId6t
 formUrl: https://docs.google.com/forms/d/e/1FAIpQLSeWYq4nROWTPU8hvwwu8Pvm1-qGNB8DkeIo001dFaPC_HsR7g/viewform?usp=publish-editor
 formStatus: live
 phone: ""
 address: ""
-serviceArea: The South and culture-led communities everywhere
+primaryCity: Shreveport
+primaryState: Louisiana
+serviceArea: Shreveport, Louisiana and growth-minded brands nationwide
 splineScenePath: /spline/hero-scene.html
 navigation:
-  - label: About
-    url: /about
+  - label: Home
+    url: /
   - label: Services
     url: /services
-  - label: Portfolio
-    url: /portfolio
-  - label: Work With Us
-    url: /work-with-us
+  - label: Work
+    url: /work
+  - label: About
+    url: /about
+  - label: Contact
+    url: /contact
 socialLinks:
   - label: Instagram
-    url: https://www.instagram.com/
+    url: https://www.instagram.com/_cakemarketing/
+  - label: Facebook
+    url: https://www.facebook.com/cakemarketingllc
   - label: LinkedIn
-    url: https://www.linkedin.com/
+    url: https://www.linkedin.com/company/officialcakemarketing_
 stats:
-  - label: Years of creative experience
-    value: 10+
-  - label: Signature strength
-    value: Sponsorship strategy
-  - label: Working style
-    value: Human intelligence-powered
+  - label: ROAS
+    value: 3x+
+  - label: Revenue Growth
+    value: 40%
+  - label: Multi-Channel Campaigns
+    value: Integrated
+  - label: Digital Amplification
+    value: Experiential
 ---

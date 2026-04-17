@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Keep Google Forms as the intake layer while sending branded confirmation emails and routing leads to the public Google Calendar booking schedule.
+Document the legacy Google Form + Apps Script workflow that now serves as a fallback/reference intake path. The primary live intake runtime should be the native on-site multi-step form and routing flow.
 
 ## Inputs Required
 
@@ -27,6 +27,15 @@ Keep Google Forms as the intake layer while sending branded confirmation emails 
 4. Push the script with `clasp push`.
 5. Run `configureProject()` or `installFormSubmitTrigger()` once to add the installable `onFormSubmit` trigger.
 6. Test with a staging submission before launch.
+
+## Current Status
+
+- Script project URL: `https://script.google.com/d/13vhn866lXL7978QUe61xxocPdpbzh7FinqhtRyP7HenmFu62s0bYGeOF/edit`
+- Real intake form file/edit ID: `1hbfukZNrUW2gc0Y60eiNufHDw7kFqnW9f8oQDOTtCbs`
+- Public responder URL is live.
+- `configureProject()` has been run from the Apps Script editor.
+- An installable trigger is present for `onFormSubmit`.
+- The workflow should be treated as backup-only after native intake deployment.
 
 ## Current Field Map
 

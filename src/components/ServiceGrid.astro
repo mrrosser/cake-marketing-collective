@@ -3,10 +3,11 @@ interface ServiceItem {
   id: string;
   data: {
     title: string;
+    slug: string;
     summary: string;
     detail: string;
+    outcome: string;
     deliverables: string[];
-    accent: string;
   };
 }
 
@@ -19,14 +20,19 @@ const { services } = Astro.props;
 
 <div class="service-grid">
   {services.map((service) => (
-    <article class:list={['service-card', service.data.accent === 'secondary' ? 'secondary' : 'primary']}>
+    <article class="service-card panel">
       <p class="eyebrow">Service</p>
       <h3>{service.data.title}</h3>
       <p>{service.data.summary}</p>
-      <p class="service-detail">{service.data.detail}</p>
+      <p><strong>Outcome:</strong> {service.data.outcome}</p>
       <ul>
-        {service.data.deliverables.map((item) => <li>{item}</li>)}
+        {service.data.deliverables.slice(0, 2).map((item) => <li>{item}</li>)}
       </ul>
+      <div class="button-row">
+        <a class="button button-ghost button-small" href={`/services/${service.data.slug}`}>
+          View service
+        </a>
+      </div>
     </article>
   ))}
 </div>

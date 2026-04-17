@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getSingleton, sortByOrder } from '../../lib/content';
+import { buildOrganizationSchema, withTitleTemplate } from '../../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const insights = sortByOrder(await getCollection('insights'));
+const title = withTitleTemplate('Insights', seo.titleTemplate);
+const description = 'Explore Cake Marketing Collective insights on SEO, brand strategy, experiential work, and integrated marketing systems.';
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
+const categories = [
+  'Performance Marketing',
+  'SEO',
+  'Brand Strategy',
+  'Experiential',
+  'AI & Automation',
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/insights"
+  ogImage={seo.defaultOgImage}
+  keywords={seo.articleKeywords}
+  schemas={[buildOrganizationSchema(settings)]}
+  settings={settings}
+>
+  <PageHero
+    eyebrow="Insights"
+    title="Expertise published in a format built for search and trust."
+    description="The insights library is designed to support discovery, authority, and sales enablement across the themes clients actually search for."
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">Editorial lanes</p>
+      <h2>Categories</h2>
+      <ul class="tag-list">
+        {categories.map((category) => (
+          <li class="tag-pill">{category}</li>
+        ))}
+      </ul>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="insight-grid">
+      {insights.map((insight) => (
+        <article class="insight-card panel">
+          <div class="insight-meta">
+            <span class="category-pill">{insight.data.category}</span>
+            <span class="category-pill">{dateFormatter.format(new Date(insight.data.publishDate))}</span>
+          </div>
+          <h3>{insight.data.title}</h3>
+          <p>{insight.data.excerpt}</p>
+          <div class="button-row">
+            <a class="button button-ghost button-small" href={`/insights/${insight.data.slug}`}>
+              Read insight
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <article class="section-card panel">
+      <p class="eyebrow">Subscribe</p>
+      <h2>Want new insights directly?</h2>
+      <p>
+        Subscription tooling is not live yet, but you can request future updates directly by
+        email until the owned-audience flow expands beyond the current intake system.
+      </p>
+      <a class="button button-ghost" href={`mailto:${settings.email}?subject=Subscribe to Cake insights`}>
+        Request insight updates
+      </a>
+    </article>
+  </section>
+</BaseLayout>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { AuthStatusCard } from '../components/app/AuthStatusCard';
+import { getSingleton } from '../lib/content';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const nextPath = Astro.url.searchParams.get('next') || '/studio';
+const error = Astro.url.searchParams.get('error');
+
+const descriptions: Record<string, string> = {
+  studio: 'That account does not have internal studio access. Use an owner, admin, or team-member account.',
+  portal: 'That account does not have client portal access. Use an invited client or internal account.',
+};
+---
+
+<BaseLayout
+  title="Access | Cake Marketing Collective"
+  description="Secure sign-in for Cake Marketing Collective studio and client portal."
+  canonicalPath="/access"
+  ogImage={seo.defaultOgImage}
+  noIndex={true}
+  settings={settings}
+>
+  <section class="section">
+    <article class="section-card panel">
+      <p class="eyebrow">Secure Access</p>
+      <h1>Sign in to the Cake platform.</h1>
+      <p>
+        Internal team access and client portal access both run through Firebase Auth and a secure
+        server session. Use an allowlisted email to continue.
+      </p>
+      {error ? <p>{descriptions[error] ?? 'Access is restricted to allowlisted users.'}</p> : null}
+    </article>
+  </section>
+
+  <section class="section">
+    <AuthStatusCard
+      nextPath={nextPath}
+      heading="Use an allowlisted Google account."
+      description="The sign-in flow exchanges the Firebase identity token for an HTTP-only server session before protected routes load."
+      client:load
+    />
+  </section>
+</BaseLayout>

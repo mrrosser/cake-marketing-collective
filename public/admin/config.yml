@@ -34,6 +34,8 @@ collections:
             options: ["pending", "live"]
           - { label: "Phone", name: "phone", widget: "string", required: false }
           - { label: "Address", name: "address", widget: "text", required: false }
+          - { label: "Primary City", name: "primaryCity", widget: "string", required: false }
+          - { label: "Primary State", name: "primaryState", widget: "string", required: false }
           - { label: "Service Area", name: "serviceArea", widget: "string", required: false }
           - { label: "Spline Scene Path", name: "splineScenePath", widget: "string", required: false }
           - label: "Navigation"
@@ -54,6 +56,7 @@ collections:
             fields:
               - { label: "Label", name: "label", widget: "string" }
               - { label: "Value", name: "value", widget: "string" }
+
   - name: "home"
     label: "Home"
     files:
@@ -65,13 +68,20 @@ collections:
           - { label: "Hero Headline", name: "heroHeadline", widget: "string" }
           - { label: "Hero Subheadline", name: "heroSubheadline", widget: "text" }
           - { label: "Hero Body", name: "heroBody", widget: "text" }
-          - { label: "Overview Title", name: "overviewTitle", widget: "string" }
-          - { label: "Overview Body", name: "overviewBody", widget: "text" }
-          - { label: "Promises", name: "promises", widget: "list" }
-          - { label: "Funding Title", name: "fundingTitle", widget: "string" }
-          - { label: "Funding Body", name: "fundingBody", widget: "text" }
-          - { label: "Closing Title", name: "closingTitle", widget: "string" }
-          - { label: "Closing Body", name: "closingBody", widget: "text" }
+          - { label: "Positioning Title", name: "positioningTitle", widget: "string" }
+          - { label: "Positioning Body", name: "positioningBody", widget: "text" }
+          - { label: "Proof Points", name: "proofPoints", widget: "list" }
+          - { label: "Services Title", name: "servicesTitle", widget: "string" }
+          - { label: "Services Body", name: "servicesBody", widget: "text" }
+          - { label: "Collective Title", name: "collectiveTitle", widget: "string" }
+          - { label: "Collective Body", name: "collectiveBody", widget: "text" }
+          - { label: "Case Studies Title", name: "caseStudiesTitle", widget: "string" }
+          - { label: "Case Studies Body", name: "caseStudiesBody", widget: "text" }
+          - { label: "Insights Title", name: "insightsTitle", widget: "string" }
+          - { label: "Insights Body", name: "insightsBody", widget: "text" }
+          - { label: "Contact Title", name: "contactTitle", widget: "string" }
+          - { label: "Contact Body", name: "contactBody", widget: "text" }
+
   - name: "founder"
     label: "Founder"
     files:
@@ -88,6 +98,24 @@ collections:
           - { label: "Philosophy", name: "philosophy", widget: "text" }
           - { label: "Signature", name: "signature", widget: "text" }
           - { label: "Highlights", name: "highlights", widget: "list" }
+
+  - name: "seoDefaults"
+    label: "SEO Defaults"
+    files:
+      - label: "Default SEO"
+        name: "defaults"
+        file: "src/content/seoDefaults/defaults.md"
+        fields:
+          - { label: "Title Template", name: "titleTemplate", widget: "string" }
+          - { label: "Default Description", name: "defaultDescription", widget: "text" }
+          - { label: "Default OG Image", name: "defaultOgImage", widget: "string" }
+          - { label: "Organization Type", name: "organizationType", widget: "string" }
+          - { label: "Service Keywords", name: "serviceKeywords", widget: "list" }
+          - { label: "Case Study Keywords", name: "caseStudyKeywords", widget: "list" }
+          - { label: "Article Keywords", name: "articleKeywords", widget: "list" }
+          - { label: "Geo Keywords", name: "geoKeywords", widget: "list" }
+          - { label: "Fallback Keywords", name: "fallbackKeywords", widget: "list" }
+
   - name: "services"
     label: "Services"
     folder: "src/content/services"
@@ -98,12 +126,13 @@ collections:
       - { label: "Slug", name: "slug", widget: "string" }
       - { label: "Summary", name: "summary", widget: "text" }
       - { label: "Detail", name: "detail", widget: "text" }
-      - label: "Accent"
-        name: "accent"
-        widget: "select"
-        options: ["primary", "secondary"]
+      - { label: "Outcome", name: "outcome", widget: "text" }
       - { label: "Order", name: "order", widget: "number" }
       - { label: "Deliverables", name: "deliverables", widget: "list" }
+      - { label: "Process", name: "process", widget: "list" }
+      - { label: "Stack", name: "stack", widget: "list" }
+      - { label: "Internal Links", name: "internalLinks", widget: "list", required: false }
+
   - name: "caseStudies"
     label: "Case Studies"
     folder: "src/content/caseStudies"
@@ -111,13 +140,17 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string" }
       - { label: "Client", name: "client", widget: "string" }
+      - { label: "Sector", name: "sector", widget: "string" }
       - { label: "Timeframe", name: "timeframe", widget: "string" }
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Overview", name: "overview", widget: "text" }
       - { label: "Challenge", name: "challenge", widget: "text" }
-      - { label: "Response", name: "response", widget: "text" }
-      - { label: "Outcome", name: "outcome", widget: "text" }
+      - { label: "Strategy", name: "strategy", widget: "text" }
+      - { label: "Execution", name: "execution", widget: "text" }
+      - { label: "Results", name: "results", widget: "text" }
       - { label: "Order", name: "order", widget: "number" }
       - label: "Metrics"
         name: "metrics"
@@ -125,6 +158,27 @@ collections:
         fields:
           - { label: "Label", name: "label", widget: "string" }
           - { label: "Value", name: "value", widget: "string" }
+      - { label: "Testimonial Quote", name: "testimonialQuote", widget: "text", required: false }
+      - { label: "Testimonial Attribution", name: "testimonialAttribution", widget: "string", required: false }
+      - { label: "Related Services", name: "relatedServices", widget: "list", required: false }
+
+  - name: "insights"
+    label: "Insights"
+    folder: "src/content/insights"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Category", name: "category", widget: "string" }
+      - { label: "Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Publish Date", name: "publishDate", widget: "string" }
+      - { label: "Image", name: "image", widget: "string", required: false }
+      - { label: "Meta Description", name: "metaDescription", widget: "text" }
+      - { label: "Order", name: "order", widget: "number" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
   - name: "testimonials"
     label: "Testimonials"
     folder: "src/content/testimonials"
@@ -136,6 +190,7 @@ collections:
       - { label: "Role", name: "role", widget: "string" }
       - { label: "Company", name: "company", widget: "string" }
       - { label: "Order", name: "order", widget: "number" }
+
   - name: "faqs"
     label: "FAQs"
     folder: "src/content/faqs"

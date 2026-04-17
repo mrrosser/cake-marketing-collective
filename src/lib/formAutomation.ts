@@ -56,11 +56,11 @@ export function buildConfirmationEmail(payload: IntakePayload): ConfirmationEmai
           <h1 style="font-size:36px;line-height:1.1;margin:0 0 16px;">Thanks for reaching out, ${safeName}.</h1>
           <p style="font-size:18px;line-height:1.7;color:#e7dff0;margin:0 0 16px;">${contextLine}</p>
           <p style="font-size:16px;line-height:1.7;color:#d3c7df;margin:0 0 24px;">
-            Your message is in queue, and the fastest next move is to lock in the discovery call so we can shape the right strategy together.
+  Your message is in queue, and the fastest next move is to lock in the strategy session so we can shape the right approach together.
           </p>
           <p style="margin:0 0 28px;">
             <a href="${payload.bookingUrl}" style="display:inline-block;padding:14px 24px;background:#954cf6;color:#fff;text-decoration:none;border-radius:999px;font-family:'Segoe UI',Arial,sans-serif;font-weight:600;">
-              Book your discovery call
+Book your strategy session
             </a>
           </p>
           <p style="font-size:14px;line-height:1.7;color:#b7a9c7;margin:0;">

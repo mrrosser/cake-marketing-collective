@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getSingleton, sortByOrder } from '../../lib/content';
+import { buildOrganizationSchema, withTitleTemplate } from '../../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const caseStudies = sortByOrder(await getCollection('caseStudies'));
+const title = withTitleTemplate('Case Studies', seo.titleTemplate);
+const description = 'Review structured case studies showing how Cake Marketing Collective approaches strategy, execution, and results across brand and experiential work.';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/work"
+  ogImage={seo.defaultOgImage}
+  keywords={seo.caseStudyKeywords}
+  schemas={[buildOrganizationSchema(settings)]}
+  noIndex={true}
+  settings={settings}
+>
+  <PageHero
+    eyebrow="Case Studies"
+    title="Proof structured around challenge, strategy, execution, and results."
+    description="The case-study system is built to support both credibility and indexing, giving decision-makers a clearer view into how CMC thinks and executes."
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">Why this format</p>
+      <h2>Built for conversion and search.</h2>
+      <p>
+        Every case study follows a repeatable structure so proof can scale cleanly as approved
+        results, visuals, and quotes are added to the library.
+      </p>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="case-study-grid">
+      {caseStudies.map((caseStudy) => (
+        <article class="case-study-card panel">
+          <img src={caseStudy.data.image} alt={`${caseStudy.data.title} case study artwork`} />
+          <div class="case-study-meta">
+            <span class="category-pill">{caseStudy.data.sector}</span>
+            <span class="category-pill">{caseStudy.data.timeframe}</span>
+          </div>
+          <h3>{caseStudy.data.title}</h3>
+          <p>{caseStudy.data.summary}</p>
+          <ul class="metric-list">
+            {caseStudy.data.metrics.map((metric) => (
+              <li class="metric-pill">{metric.label}: {metric.value}</li>
+            ))}
+          </ul>
+          <div class="button-row">
+            <a class="button button-ghost button-small" href={`/work/${caseStudy.data.slug}`}>
+              Read case study
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

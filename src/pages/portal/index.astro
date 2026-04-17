@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { PortalDashboard } from '../../components/app/PortalDashboard';
+import { getSingleton } from '../../lib/content';
+import { getPortalSnapshot } from '../../lib/server/platform-store';
+
+export const prerender = false;
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const snapshot = Astro.locals.platformSession
+  ? await getPortalSnapshot(Astro.locals.platformSession)
+  : undefined;
+---
+
+<BaseLayout
+  title="Client Portal | Cake Marketing Collective"
+  description="Client-safe portal for project status, files, approvals, design spaces, and billing context."
+  canonicalPath="/portal"
+  ogImage={seo.defaultOgImage}
+  noIndex={true}
+  settings={settings}
+>
+  <PortalDashboard snapshot={snapshot} client:load />
+</BaseLayout>

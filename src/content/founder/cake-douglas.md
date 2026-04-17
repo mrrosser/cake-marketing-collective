@@ -1,15 +1,15 @@
 ---
 name: Cake Douglas
-title: Founder, Creative Director, and Culture Bearer
+title: Founder, Growth Strategist, and Cultural Operator
 location: Shreveport, Louisiana
-image: /images/founder-placeholder.svg
+image: /images/founder-cake-editorial.jpeg
 photoCredit: Taylor Hunter
-summary: Cake Douglas is a creative director whose practice sits at the intersection of culture, strategy, and community power. Her work is rooted in civic engagement, art, and the kind of storytelling that helps people feel like they belong.
-philosophy: A great event is more than just a gathering. It is an experience that tells a story, builds a community, and leaves an unforgettable mark.
-signature: Through Cake Marketing Collective, she builds community through culturally fluid marketing and brand design while creating third spaces that feel intentional, welcoming, and unforgettable.
+summary: "Cake Douglas built Cake Marketing Collective on one belief: marketing should be measurable, brand should be intentional, and execution should be disciplined enough to scale."
+philosophy: "Strategy matters, but culture matters too. The strongest brands do not choose between performance and presence. They know how to move both."
+signature: "Through Cake Marketing Collective, she bridges performance strategy, brand direction, and experiential thinking so clients can grow without flattening what makes the brand matter."
 highlights:
-  - Civic engagement organizer and culture bearer who has advocated with mission-aligned organizations across the South.
-  - Summa Cum Laude graduate of Dillard University's Urban Studies and Public Policy program.
-  - More than a decade of hands-on creative, event, and community-facing experience.
-  - Driven by art, justice, and people-power rather than generic agency formulas.
+  - More than a decade of experience across strategy, events, partnerships, and audience development.
+  - Operator-led approach shaped by civic work, community building, and brand storytelling.
+  - Builds modular systems that let clients scale without losing their voice.
+  - Positions Cake as a strategic partner rather than a task-only vendor.
 ---

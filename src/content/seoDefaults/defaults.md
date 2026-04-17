@@ -1,16 +1,30 @@
 ---
 titleTemplate: "%s | Cake Marketing Collective"
-defaultDescription: Founder-led event marketing and brand design for culturally rooted experiences, sponsorship strategy, and community-centered storytelling.
+defaultDescription: A performance-driven marketing agency blending paid media, brand strategy, content production, and experiential campaigns. Built with culture. Backed by data.
 defaultOgImage: /og/default.svg
-organizationType: ProfessionalService
+organizationType: MarketingAgency
 serviceKeywords:
-  - event marketing
-  - experiential design
-  - sponsorship development
-  - community engagement
-  - cultural strategy
+  - integrated marketing agency
+  - performance marketing agency
+  - experiential marketing agency
+  - brand strategy agency
+  - content production agency
+caseStudyKeywords:
+  - marketing case studies
+  - experiential marketing case study
+  - integrated growth strategy
+articleKeywords:
+  - marketing insights
+  - SEO strategy
+  - experiential brand strategy
+  - AI marketing automation
+geoKeywords:
+  - marketing agency in Shreveport
+  - experiential marketing agency in Shreveport
+  - Black-owned marketing agency
+  - creative agency in Shreveport
 fallbackKeywords:
-  - brand experiences
-  - event branding
-  - founder-led creative direction
+  - integrated marketing agency
+  - culture-driven marketing
+  - founder-led brand strategy
 ---

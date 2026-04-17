@@ -1,66 +1,75 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../components/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
 import { getSingleton, sortByOrder } from '../lib/content';
-import { buildOrganizationSchema, withTitleTemplate } from '../lib/seo';
+import {
+  buildMarketingAgencySchema,
+  buildOrganizationSchema,
+} from '../lib/seo';
 
 const settings = (await getSingleton('siteSettings')).data;
 const seo = (await getSingleton('seoDefaults')).data;
+const city = settings.primaryCity || 'Shreveport';
 const caseStudies = sortByOrder(await getCollection('caseStudies'));
-const testimonials = sortByOrder(
-  (await getCollection('testimonials')).filter((testimonial) => !testimonial.data.draft),
-);
-const title = withTitleTemplate('Portfolio', seo.titleTemplate);
-const description = 'Selected event marketing and brand experience work led by Cake Marketing Collective.';
-const schemas = [buildOrganizationSchema(settings)];
+const portfolioItems = [
+  {
+    image: caseStudies[0]?.data.image ?? '/images/linkfest-placeholder.svg',
+    title: 'Brand Activation',
+    caption: 'Experiential plus digital rollout.',
+    alt: 'Experiential marketing campaign by Cake Marketing Collective for cultural activation',
+  },
+  {
+    image: '/og/default.svg',
+    title: 'Paid Media Growth',
+    caption: 'Performance systems built around revenue clarity.',
+    alt: 'Performance marketing campaign by Cake Marketing Collective for growth brand',
+  },
+  {
+    image: '/images/founder-placeholder.svg',
+    title: 'Editorial Content',
+    caption: 'Strategic storytelling designed for digital scale.',
+    alt: 'Content production campaign by Cake Marketing Collective for editorial brand',
+  },
+];
+const title = `Our Work | Performance & Experiential Marketing Case Studies`;
+const description =
+  'Explore campaigns blending paid media, brand strategy, content production, and experiential marketing with measurable results.';
 ---
 
 <BaseLayout
   title={title}
   description={description}
-  canonicalPath="/portfolio"
+  canonicalPath="/work"
   ogImage={seo.defaultOgImage}
-  keywords={seo.fallbackKeywords}
-  schemas={schemas}
+  keywords={[...seo.caseStudyKeywords, ...seo.serviceKeywords, `creative agency in ${city}`]}
+  schemas={[buildOrganizationSchema(settings), buildMarketingAgencySchema(settings)]}
+  noIndex={true}
   settings={settings}
 >
-  <section class="page-hero">
-    <div class="page-hero-copy">
-      <p class="eyebrow">Portfolio</p>
-      <h1>Proof of taste, clarity, and atmosphere.</h1>
-      <p class="hero-body">
-        The portfolio is structured to grow as the Squarespace export and approved visuals
-        arrive. For launch, LinkFest anchors the story and the page leaves room for new case
-        studies without redesign.
+  <PageHero
+    eyebrow="Portfolio"
+    title="Proof Over Promises."
+    description="Campaigns built to perform."
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">Visual-first</p>
+      <h2>Strategy. Execution. Scale.</h2>
+      <p>
+        This page stays light on copy so the work can carry the first impression. Detailed
+        breakdowns still live in the case-study archive for deeper ranking and proof.
       </p>
-    </div>
-    <div class="page-hero-visual">
-      <div class="status-panel">
-        <p class="eyebrow">Migration status</p>
-        <h2>Additional stories are queued.</h2>
-        <p>
-          Squarespace remains the source for archived metadata, visual assets, and any approved
-          legacy copy that should be migrated into future case studies.
-        </p>
-      </div>
-    </div>
-  </section>
+    </Fragment>
+  </PageHero>
 
   <section class="section">
-    <div class="case-grid">
-      {caseStudies.map((caseStudy) => (
-        <article class="case-card">
-          <img src={caseStudy.data.image} alt={`${caseStudy.data.title} placeholder artwork`} />
-          <p class="eyebrow">{caseStudy.data.timeframe}</p>
-          <h2>{caseStudy.data.title}</h2>
-          <p>{caseStudy.data.summary}</p>
-          <p><strong>Challenge:</strong> {caseStudy.data.challenge}</p>
-          <p><strong>Response:</strong> {caseStudy.data.response}</p>
-          <p><strong>Outcome:</strong> {caseStudy.data.outcome}</p>
-          <div class="metric-list">
-            {caseStudy.data.metrics.map((metric) => (
-              <span class="metric-pill">{metric.label}: {metric.value}</span>
-            ))}
+    <div class="portfolio-grid">
+      {portfolioItems.map((item) => (
+        <article class="portfolio-card panel">
+          <img src={item.image} alt={item.alt} />
+          <div class="portfolio-copy">
+            <h3>{item.title}</h3>
+            <p>{item.caption}</p>
           </div>
         </article>
       ))}
@@ -68,27 +77,17 @@ const schemas = [buildOrganizationSchema(settings)];
   </section>
 
   <section class="section">
-    <div class="section-card">
-      <p class="eyebrow">Testimonials</p>
-      <h2>Client language will be added once approved.</h2>
-      {testimonials.length > 0 ? (
-        <div class="case-grid">
-          {testimonials.map((testimonial) => (
-            <article class="case-card">
-              <p>"{testimonial.data.quote}"</p>
-              <p><strong>{testimonial.data.name}</strong></p>
-              <p>{testimonial.data.role}, {testimonial.data.company}</p>
-            </article>
-          ))}
-        </div>
-      ) : (
-        <div class="empty-state">
-          <p>
-            No client quotes are published in this repo yet. The page is intentionally built to
-            accept approved testimonials later without layout changes.
-          </p>
-        </div>
-      )}
-    </div>
+    <article class="section-card panel">
+      <p class="eyebrow">Deeper proof</p>
+      <h2>Need the strategy behind the visuals?</h2>
+      <p>
+        Use the case-studies archive for longer-form breakdowns that connect challenge,
+        strategy, execution, and results.
+      </p>
+      <div class="button-row">
+        <a class="button button-ghost" href="/work">View work</a>
+        <a class="button" href="/contact">Start a Project</a>
+      </div>
+    </article>
   </section>
 </BaseLayout>

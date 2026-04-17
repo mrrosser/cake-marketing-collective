@@ -1,0 +1,155 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getSingleton } from '../../lib/content';
+import {
+  buildCaseStudySchema,
+  buildMarketingAgencySchema,
+  buildOrganizationSchema,
+  withTitleTemplate,
+} from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('caseStudies');
+  return caseStudies.map((caseStudy) => ({
+    params: { slug: caseStudy.data.slug },
+    props: { caseStudy },
+  }));
+}
+
+const { caseStudy } = Astro.props;
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const services = await getCollection('services');
+const relatedServices = services.filter((service) =>
+  (caseStudy.data.relatedServices ?? []).includes(service.data.slug),
+);
+const title = withTitleTemplate(caseStudy.data.title, seo.titleTemplate);
+const description = caseStudy.data.summary;
+const pathname = `/work/${caseStudy.data.slug}`;
+const schemas = [
+  buildOrganizationSchema(settings),
+  buildMarketingAgencySchema(settings),
+  buildCaseStudySchema(caseStudy.data, pathname),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath={`/work/${caseStudy.data.slug}`}
+  ogImage={caseStudy.data.image}
+  ogType="article"
+  keywords={[caseStudy.data.sector, ...seo.caseStudyKeywords]}
+  schemas={schemas}
+  noIndex={true}
+  settings={settings}
+>
+  <PageHero
+    eyebrow="Case Study"
+    title={caseStudy.data.title}
+    description={caseStudy.data.summary}
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">Snapshot</p>
+      <h2>{caseStudy.data.client}</h2>
+      <ul class="metric-list">
+        <li class="metric-pill">{caseStudy.data.sector}</li>
+        <li class="metric-pill">{caseStudy.data.timeframe}</li>
+      </ul>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="detail-shell">
+      <article class="detail-content panel">
+        <p class="eyebrow">Overview</p>
+        <h2>Business context</h2>
+        <p>{caseStudy.data.overview}</p>
+      </article>
+      <aside class="detail-sidebar panel">
+        <p class="eyebrow">Metrics</p>
+        <ul>
+          {caseStudy.data.metrics.map((metric) => (
+            <li>{metric.label}: {metric.value}</li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card panel">
+        <p class="eyebrow">Challenge</p>
+        <h2>What had to change.</h2>
+        <p>{caseStudy.data.challenge}</p>
+      </article>
+      <article class="section-card panel">
+        <p class="eyebrow">Strategy</p>
+        <h2>The operating approach.</h2>
+        <p>{caseStudy.data.strategy}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card panel">
+        <p class="eyebrow">Execution</p>
+        <h2>How the plan moved.</h2>
+        <p>{caseStudy.data.execution}</p>
+      </article>
+      <article class="section-card panel">
+        <p class="eyebrow">Results</p>
+        <h2>What the work produced.</h2>
+        <p>{caseStudy.data.results}</p>
+      </article>
+    </div>
+  </section>
+
+  {caseStudy.data.testimonialQuote ? (
+    <section class="section">
+      <article class="section-card panel">
+        <p class="eyebrow">Testimonial</p>
+        <h2>Client perspective</h2>
+        <p>"{caseStudy.data.testimonialQuote}"</p>
+        <p><strong>{caseStudy.data.testimonialAttribution}</strong></p>
+      </article>
+    </section>
+  ) : null}
+
+  {relatedServices.length > 0 ? (
+    <section class="section">
+      <article class="section-card panel">
+        <p class="eyebrow">Related services</p>
+        <h2>How this connects back to the service mix.</h2>
+        <div class="button-row">
+          {relatedServices.map((service) => (
+            <a class="button button-ghost" href={`/services/${service.data.slug}`}>
+              {service.data.title}
+            </a>
+          ))}
+        </div>
+      </article>
+    </section>
+  ) : null}
+
+  <section class="section">
+    <article class="section-card panel">
+      <p class="eyebrow">Next step</p>
+      <h2>Need this kind of structure around your marketing?</h2>
+      <p>
+        Use the intake flow to share context, then book the strategy session to align on scope,
+        timing, and the right mix of service support.
+      </p>
+      <div class="button-row">
+        <a class="button" href="/contact">Start the intake</a>
+        <a class="button button-ghost" href={settings.bookingUrl} target="_blank" rel="noreferrer">
+          Book a Strategy Session
+        </a>
+      </div>
+    </article>
+  </section>
+</BaseLayout>

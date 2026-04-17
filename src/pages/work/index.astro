@@ -1,0 +1,120 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getSingleton, sortByOrder } from '../../lib/content';
+import {
+  buildMarketingAgencySchema,
+  buildOrganizationSchema,
+} from '../../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const caseStudies = sortByOrder(await getCollection('caseStudies'));
+type WorkItem = {
+  title: string;
+  caption: string;
+  image: string;
+  alt: string;
+  metric: string;
+  href?: string;
+};
+
+const fallbackItems: WorkItem[] = [
+  {
+    title: 'Performance Systems',
+    caption: 'Paid, page, and reporting structure built for cleaner conversion paths.',
+    image: '/og/default.svg',
+    alt: 'Performance marketing systems by Cake Marketing Collective',
+    metric: 'Integrated funnel support',
+  },
+  {
+    title: 'Content That Carries',
+    caption: 'Creative direction designed to support launches, campaigns, and digital reuse.',
+    image: '/images/founder-placeholder.svg',
+    alt: 'Content production and brand strategy by Cake Marketing Collective',
+    metric: 'Brand clarity with conversion support',
+  },
+];
+
+const workItems: WorkItem[] = [
+  ...caseStudies.map((caseStudy) => ({
+    title: caseStudy.data.title,
+    caption: caseStudy.data.summary,
+    image: caseStudy.data.image,
+    alt: `${caseStudy.data.title} marketing campaign by Cake Marketing Collective`,
+    metric: caseStudy.data.metrics[0]
+      ? `${caseStudy.data.metrics[0].label}: ${caseStudy.data.metrics[0].value}`
+      : caseStudy.data.sector,
+    href: `/work/${caseStudy.data.slug}`,
+  })),
+  ...fallbackItems,
+].slice(0, 6);
+
+const title = 'Work | Cake Marketing Collective';
+const description =
+  'Explore performance, brand, content, and experiential work built to turn structure into measurable momentum.';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/work"
+  ogImage={seo.defaultOgImage}
+  keywords={[...seo.caseStudyKeywords, ...seo.serviceKeywords]}
+  schemas={[buildOrganizationSchema(settings), buildMarketingAgencySchema(settings)]}
+  settings={settings}
+>
+  <PageHero
+    eyebrow="Work"
+    title="Proof Over Promises."
+    description="Campaigns, launches, and experiences built to perform."
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">Visual-first</p>
+      <h2>Show the work. Keep the copy disciplined.</h2>
+      <p>
+        This page is built to prove range quickly. The detailed case-study pages carry the
+        deeper context when a buyer wants more than the first impression.
+      </p>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="work-grid">
+      {workItems.map((item) => (
+        <article class="work-card panel">
+          <img src={item.image} alt={item.alt} />
+          <div class="work-copy">
+            <p class="eyebrow">Work</p>
+            <h3>{item.title}</h3>
+            <p>{item.caption}</p>
+            <p class="metric-pill">{item.metric}</p>
+            {item.href ? (
+              <div class="button-row">
+                <a class="button button-ghost button-small" href={item.href}>
+                  View case study
+                </a>
+              </div>
+            ) : null}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <article class="section-card panel">
+      <p class="eyebrow">Next step</p>
+      <h2>Need the same level of structure behind your marketing?</h2>
+      <p>
+        Review the services, then use the intake and strategy session to decide what needs a
+        focused fix and what needs a broader reset.
+      </p>
+      <div class="button-row">
+        <a class="button" href="/contact">Start the intake</a>
+        <a class="button button-ghost" href="/services">View services</a>
+      </div>
+    </article>
+  </section>
+</BaseLayout>

@@ -6,6 +6,7 @@ interface Props {
   description: string;
   canonicalPath?: string;
   ogImage?: string;
+  ogType?: string;
   noIndex?: boolean;
   keywords?: string[];
   schemas?: Record<string, unknown>[];
@@ -16,6 +17,7 @@ const {
   description,
   canonicalPath = '/',
   ogImage = '/og/default.svg',
+  ogType = 'website',
   noIndex = false,
   keywords = [],
   schemas = [],
@@ -32,7 +34,7 @@ const socialImage = ogImage.startsWith('http') ? ogImage : buildCanonical(ogImag
 <link rel="canonical" href={canonical} />
 {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
 {noIndex && <meta name="robots" content="noindex, nofollow" />}
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:site_name" content="Cake Marketing Collective" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ServiceGrid from '../../components/ServiceGrid.astro';
+import { getSingleton, sortByOrder } from '../../lib/content';
+import {
+  buildMarketingAgencySchema,
+  buildOrganizationSchema,
+  buildProfessionalServiceSchema,
+  withTitleTemplate,
+} from '../../lib/seo';
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const services = sortByOrder(await getCollection('services'));
+const city = settings.primaryCity || 'Shreveport';
+const title = withTitleTemplate('Integrated Marketing Services', seo.titleTemplate);
+const description = `Explore performance marketing, brand strategy, content production, experiential campaigns, and integrated growth services for brands in ${city} and beyond.`;
+const schemas = [
+  buildOrganizationSchema(settings),
+  buildMarketingAgencySchema(settings),
+  buildProfessionalServiceSchema(
+    settings,
+    services.map((service) => service.data),
+  ),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/services"
+  ogImage={seo.defaultOgImage}
+  keywords={[...seo.serviceKeywords, ...seo.geoKeywords]}
+  schemas={schemas}
+  settings={settings}
+>
+  <PageHero
+    eyebrow="Services"
+    title="Integrated Marketing Services"
+    description="A service-first system built around performance marketing, brand and web clarity, content, lifecycle support, and experiential execution."
+  >
+    <Fragment slot="aside">
+      <p class="eyebrow">How engagement starts</p>
+      <h2>Start with the bottleneck or rebuild the system around revenue.</h2>
+      <p>
+        Some brands need sharper paid media. Others need cleaner positioning, stronger web
+        conversion, or experiential work that can carry digitally after the event ends.
+        The service stack is designed to handle both.
+      </p>
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="section-intro">
+      <p class="eyebrow">Service hub</p>
+      <h2>{`Built for brands in ${city} and beyond that need structure, not noise.`}</h2>
+      <p class="section-lead">
+        Every service page is designed to show what the work is, what gets delivered, who it
+        fits, and how it connects back to the larger growth system.
+      </p>
+    </div>
+    <ServiceGrid services={services} />
+  </section>
+
+  <section class="section">
+    <div class="section-grid">
+      <article class="section-card panel">
+        <p class="eyebrow">Internal linking</p>
+        <h2>Services, work, and contact are meant to move together.</h2>
+        <p>
+          The service hub points deeper into the detailed service pages. Those pages link to
+          work and related services so buyers can move from interest to proof without losing
+          context.
+        </p>
+      </article>
+      <article class="section-card panel">
+        <p class="eyebrow">Next step</p>
+        <h2>Use the intake to show where growth is slowing down.</h2>
+        <p>
+          The intake form captures channel priorities, business context, and timing first. The
+          strategy session turns that into a recommendation you can actually use.
+        </p>
+        <div class="button-row">
+          <a class="button" href="/work">View work</a>
+          <a class="button button-ghost" href={settings.bookingUrl} target="_blank" rel="noreferrer">
+            Book a Strategy Session
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

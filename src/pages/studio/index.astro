@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { StudioDashboard } from '../../components/app/StudioDashboard';
+import { getSingleton } from '../../lib/content';
+import { getStudioSnapshot } from '../../lib/server/platform-store';
+
+export const prerender = false;
+
+const settings = (await getSingleton('siteSettings')).data;
+const seo = (await getSingleton('seoDefaults')).data;
+const snapshot = Astro.locals.platformSession
+  ? await getStudioSnapshot(Astro.locals.platformSession)
+  : undefined;
+---
+
+<BaseLayout
+  title="Studio | Cake Marketing Collective"
+  description="Internal CRM, delivery, design, research, finance, and automation control plane."
+  canonicalPath="/studio"
+  ogImage={seo.defaultOgImage}
+  noIndex={true}
+  settings={settings}
+>
+  <StudioDashboard snapshot={snapshot} client:load />
+</BaseLayout>

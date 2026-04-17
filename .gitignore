@@ -28,3 +28,7 @@ playwright-report/
 
 # Local Netlify folder
 .netlify
+
+# local artifacts
+output/
+tmp/

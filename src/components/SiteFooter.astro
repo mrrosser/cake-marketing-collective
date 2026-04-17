@@ -1,4 +1,7 @@
 ---
+import { getCollection } from 'astro:content';
+import { sortByOrder } from '../lib/content';
+
 interface NavLink {
   label: string;
   url: string;
@@ -8,7 +11,9 @@ interface FooterSettings {
   siteName: string;
   email: string;
   bookingUrl: string;
+  formUrl?: string;
   socialLinks: NavLink[];
+  navigation: NavLink[];
 }
 
 interface Props {
@@ -17,27 +22,61 @@ interface Props {
 
 const { settings } = Astro.props;
 const year = new Date().getFullYear();
+const services = sortByOrder(await getCollection('services'));
+const coreServiceSlugs = new Set([
+  'performance-marketing',
+  'branding-web',
+  'experiential-marketing',
+  'integrated-growth',
+]);
+const coreServices = services.filter((service) => coreServiceSlugs.has(service.data.slug));
 ---
 
 <footer class="site-footer">
   <div class="footer-grid">
-    <div>
+    <div class="footer-column footer-brand-column">
       <p class="eyebrow">Cake Marketing Collective</p>
       <p class="footer-copy">
-        Founder-led strategy for events, partnerships, and brand experiences that need
-        substance as much as style.
+        Strategic marketing systems for brands and experiences that need sharper structure,
+        stronger visibility, and clearer conversion paths.
       </p>
     </div>
-    <div>
-      <p class="footer-heading">Contact</p>
-      <a href={`mailto:${settings.email}`}>{settings.email}</a>
-      <a href={settings.bookingUrl} target="_blank" rel="noreferrer">Book discovery call</a>
+    <div class="footer-column">
+      <p class="footer-heading">Navigate</p>
+      <div class="footer-link-list">
+        {settings.navigation.map((link) => (
+          <a href={link.url}>{link.label}</a>
+        ))}
+        <a href="/insights">Insights</a>
+        <a href="/portal">Client Portal</a>
+        <a href="/studio">Studio</a>
+      </div>
     </div>
-    <div>
+    <div class="footer-column">
+      <p class="footer-heading">Core Services</p>
+      <div class="footer-link-list">
+        {coreServices.map((service) => (
+          <a href={`/services/${service.data.slug}`}>{service.data.title}</a>
+        ))}
+      </div>
+    </div>
+    <div class="footer-column">
+      <p class="footer-heading">Contact</p>
+      <div class="footer-link-list">
+        <a href={`mailto:${settings.email}`}>{settings.email}</a>
+        <a href={settings.bookingUrl} target="_blank" rel="noreferrer">Book strategy session</a>
+        {settings.formUrl && (
+          <a href={settings.formUrl} target="_blank" rel="noreferrer">Open intake form</a>
+        )}
+      </div>
+    </div>
+    <div class="footer-column">
       <p class="footer-heading">Social</p>
-      {settings.socialLinks.map((link) => (
-        <a href={link.url} target="_blank" rel="noreferrer">{link.label}</a>
-      ))}
+      <div class="footer-link-list">
+        {settings.socialLinks.map((link) => (
+          <a href={link.url} target="_blank" rel="noreferrer">{link.label}</a>
+        ))}
+      </div>
     </div>
   </div>
   <div class="footer-meta">

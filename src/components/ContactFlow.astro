@@ -1,0 +1,65 @@
+---
+interface Settings {
+  email: string;
+  bookingUrl: string;
+  formUrl?: string;
+  formStatus: 'pending' | 'live';
+}
+
+interface Props {
+  settings: Settings;
+}
+
+const { settings } = Astro.props;
+const formIsLive = settings.formStatus === 'live' && Boolean(settings.formUrl);
+---
+
+<section class="contact-grid">
+  <article class="contact-card panel">
+    <p class="eyebrow">Intake</p>
+    <h2>Share the essentials first.</h2>
+    <p>
+      Keep the intake tight: name, company, email, budget range, services needed, and the
+      context behind the ask.
+    </p>
+    <ul>
+      <li>Name</li>
+      <li>Company</li>
+      <li>Email</li>
+      <li>Budget Range</li>
+      <li>Services Needed</li>
+      <li>Message</li>
+    </ul>
+    {formIsLive ? (
+      <a class="button" href={settings.formUrl} target="_blank" rel="noreferrer">
+        Open intake form
+      </a>
+    ) : (
+      <a class="button" href={`mailto:${settings.email}?subject=Cake Marketing inquiry`}>
+        Email the team
+      </a>
+    )}
+  </article>
+  <article class="contact-card panel">
+    <p class="eyebrow">Session</p>
+    <h2>Book the strategy session.</h2>
+    <p>
+      The public scheduling flow routes directly to the working calendar so the next step
+      stays obvious once the intake is in.
+    </p>
+    <a class="button" href={settings.bookingUrl} target="_blank" rel="noreferrer">
+      Book a Strategy Session
+    </a>
+  </article>
+  <article class="contact-card panel">
+    <p class="eyebrow">Direct contact</p>
+    <h2>Need a faster answer?</h2>
+    <p>
+      For partner, press, or urgent inquiries, use email directly and include the timeline,
+      objective, and preferred response window.
+    </p>
+    <a class="button button-ghost" href={`mailto:${settings.email}`}>
+      {settings.email}
+    </a>
+  </article>
+</section>
