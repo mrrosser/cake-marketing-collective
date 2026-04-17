@@ -8,12 +8,6 @@ const portalPath = /^\/portal(\/|$)/;
 const protectedApiPath = /^\/api\/(migration|providers)(\/|$)/;
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const runtime = getPlatformRuntimeConfig();
-  const sessionCookie = context.cookies.get(runtime.sessionCookieName)?.value;
-  const session = await verifySessionCookie(sessionCookie);
-
-  context.locals.platformSession = session;
-
   const pathname = context.url.pathname;
   const isStudioRequest = studioPath.test(pathname);
   const isPortalRequest = portalPath.test(pathname);
@@ -22,6 +16,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (!isStudioRequest && !isPortalRequest && !isProtectedApiRequest) {
     return next();
   }
+
+  const runtime = getPlatformRuntimeConfig();
+  const sessionCookie = context.cookies.get(runtime.sessionCookieName)?.value;
+  const session = await verifySessionCookie(sessionCookie);
+
+  context.locals.platformSession = session;
 
   if (!session) {
     if (isProtectedApiRequest) {

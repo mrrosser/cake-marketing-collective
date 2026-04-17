@@ -3,6 +3,8 @@ import BaseLayout from '../components/BaseLayout.astro';
 import { AuthStatusCard } from '../components/app/AuthStatusCard';
 import { getSingleton } from '../lib/content';
 
+export const prerender = false;
+
 const settings = (await getSingleton('siteSettings')).data;
 const seo = (await getSingleton('seoDefaults')).data;
 const nextPath = Astro.url.searchParams.get('next') || '/studio';
