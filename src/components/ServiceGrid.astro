@@ -18,20 +18,23 @@ interface Props {
 const { services } = Astro.props;
 ---
 
-<div class="service-grid">
-  {services.map((service) => (
-    <article class="service-card panel">
-      <p class="eyebrow">Service</p>
+<div class="editorial-service-rail">
+  {services.map((service, index) => (
+    <article class="editorial-service-card reveal-on-scroll">
+      <div class="editorial-service-card__index">{String(index + 1).padStart(2, '0')}</div>
+      <div class="editorial-service-card__content">
+      <p class="editorial-service-card__eyebrow">Service</p>
       <h3>{service.data.title}</h3>
       <p>{service.data.summary}</p>
-      <p><strong>Outcome:</strong> {service.data.outcome}</p>
-      <ul>
-        {service.data.deliverables.slice(0, 2).map((item) => <li>{item}</li>)}
-      </ul>
+      <p class="editorial-service-card__outcome"><strong>Outcome:</strong> {service.data.outcome}</p>
+      <div class="editorial-service-card__chips">
+        {service.data.deliverables.slice(0, 3).map((item) => <span>{item}</span>)}
+      </div>
       <div class="button-row">
         <a class="button button-ghost button-small" href={`/services/${service.data.slug}`}>
           View service
         </a>
+      </div>
       </div>
     </article>
   ))}

@@ -41,6 +41,13 @@ Ship the current repo as a single Cake platform with three coherent surfaces: a 
    Definition of done: docs describe local run/deploy/Firebase setup, Google Form flow is documented as fallback only, protected route behavior is documented, and tests reflect the current platform surfaces instead of the superseded launch site.
    Status: completed
 
+6. Editorial adaptation pass
+   Files: `src/components/SiteHeader.astro`, `src/components/SiteFooter.astro`, `src/components/HeroScene.astro`, `src/components/PageHero.astro`, `src/components/ServiceGrid.astro`, `src/pages/index.astro`, `src/pages/services/index.astro`, `src/pages/insights/index.astro`, `src/styles/global.css`, `tests/smoke/site.spec.ts`
+   Risk: medium
+   Verification: `npm run check`, `npm run test:smoke`, `npm run build`
+   Definition of done: homepage, services hub, and insights archive read as a media-first editorial experience with stronger scroll rhythm, updated public shell styling, and smoke coverage for the new public navigation and archive layout.
+   Status: completed
+
 ## Open Gaps
 
 - Google sign-in is the launch auth path. Apple is intentionally deferred unless the project later moves to Clerk or a native Apple Developer setup.

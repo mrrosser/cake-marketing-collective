@@ -15,6 +15,7 @@ const home = (await getSingleton('home')).data;
 const founder = (await getSingleton('founder')).data;
 const caseStudies = sortByOrder(await getCollection('caseStudies'));
 const services = sortByOrder(await getCollection('services'));
+const insights = sortByOrder(await getCollection('insights'));
 const featuredCase = caseStudies[0];
 const city = settings.primaryCity || 'Shreveport';
 const title = `Cake Marketing Collective | Integrated Marketing & Experiential Agency in ${city}`;
@@ -38,6 +39,7 @@ const serviceHighlights = [
     href: '/services/experiential-marketing',
   },
 ];
+const featuredInsights = insights.slice(0, 2);
 const schemas = [
   buildOrganizationSchema(settings),
   buildMarketingAgencySchema(settings),
@@ -66,39 +68,35 @@ const schemas = [
     scenePath={settings.splineScenePath}
     heroImage={founder.image}
     heroImageAlt={`Portrait of ${founder.name}`}
+    stats={settings.stats}
   />
 
-  <section class="section">
-    <div class="section-grid">
-      <article class="section-card panel">
-        <p class="eyebrow">Reality</p>
-        <h2>{home.positioningTitle}</h2>
-        <p>{home.positioningBody}</p>
-        <p class="reality-copy">Marketing infrastructure beats marketing theater.</p>
-      </article>
-      <article class="section-card panel">
-        <p class="eyebrow">Proof</p>
-        <h2>Performance-backed, not presentation-backed.</h2>
-        <p>Clear outcomes matter more than decorative stat boxes.</p>
-        <ul class="proof-list">
-          {home.proofPoints.map((point) => (
-            <li class="metric-pill">{point}</li>
-          ))}
-        </ul>
-      </article>
+  <section class="editorial-band reveal-on-scroll">
+    <div class="editorial-band__intro">
+      <p class="editorial-kicker">01 / point of view</p>
+      <h2>{home.positioningTitle}</h2>
+    </div>
+    <div class="editorial-band__body">
+      <p>{home.positioningBody}</p>
+      <p class="editorial-band__emphasis">Marketing infrastructure beats marketing theater.</p>
     </div>
   </section>
 
-  <section class="section">
-    <div class="section-intro">
-      <p class="eyebrow">Services</p>
+  <section class="editorial-sticky reveal-on-scroll">
+    <div class="editorial-sticky__lead">
+      <p class="editorial-kicker">02 / where the flow changes</p>
       <h2>{home.servicesTitle}</h2>
-      <p class="section-lead">{home.servicesBody}</p>
+      <p>{home.servicesBody}</p>
+      <div class="editorial-chip-row">
+        {home.proofPoints.map((point) => (
+          <span>{point}</span>
+        ))}
+      </div>
     </div>
-    <div class="grid-3">
+    <div class="editorial-sticky__stack">
       {serviceHighlights.map((item) => (
-        <article class="section-card panel">
-          <p class="eyebrow">Pillar</p>
+        <article class="editorial-stack-card">
+          <p class="editorial-stack-card__count">{String(serviceHighlights.indexOf(item) + 1).padStart(2, '0')}</p>
           <h3>{item.title}</h3>
           <p>{item.text}</p>
           <div class="button-row">
@@ -107,21 +105,26 @@ const schemas = [
         </article>
       ))}
     </div>
-    <div class="button-row" style="margin-top: 24px;">
-      <a class="button button-ghost" href="/services">Explore all services</a>
-    </div>
   </section>
 
-  <section class="section">
-    <div class="section-grid">
-      <article class="section-card panel">
-        <p class="eyebrow">Work</p>
-        <h2>{home.caseStudiesTitle}</h2>
-        <p>{home.caseStudiesBody}</p>
+  <section class="editorial-showcase reveal-on-scroll">
+    <div class="editorial-showcase__media">
+      <img src={founder.image} alt={`Portrait of ${founder.name}`} />
+    </div>
+    <div class="editorial-showcase__copy">
+      <p class="editorial-kicker">03 / proof</p>
+      <h2>{home.caseStudiesTitle}</h2>
+      <p>{home.caseStudiesBody}</p>
+      <p>
+        The public site should feel like the first chapter of a working relationship:
+        calm, assured, visual, and already moving toward the next decision.
+      </p>
         {featuredCase ? (
           <>
-            <p><strong>{featuredCase.data.title}</strong></p>
+          <div class="editorial-showcase__feature">
+            <span>{featuredCase.data.title}</span>
             <p>{featuredCase.data.summary}</p>
+          </div>
             <div class="button-row">
               <a class="button button-ghost" href="/work">
                 View Work
@@ -129,39 +132,43 @@ const schemas = [
             </div>
           </>
         ) : null}
-      </article>
-      <article class="section-card panel founder-preview-card">
-        <p class="eyebrow">Founder</p>
-        <img class="founder-portrait founder-preview-image" src={founder.image} alt="Cake Douglas, founder of Cake Marketing Collective" />
-        <h2>Founder-led strategy with operating discipline.</h2>
-        <p>{founder.summary}</p>
-        <div class="button-row">
-          <a class="button button-ghost" href="/about">About Cake</a>
-        </div>
-      </article>
+      <div class="button-row">
+        <a class="button button-ghost" href="/about">About Cake</a>
+      </div>
     </div>
   </section>
 
-  <section class="section">
-    <article class="section-card panel">
-      <p class="eyebrow">GEO Authority</p>
-      <h2>{home.collectiveTitle}</h2>
-      <p>{home.collectiveBody}</p>
-      <p><strong>Primary market:</strong> {city}, {settings.primaryState || 'Louisiana'}.</p>
-    </article>
+  <section class="editorial-marquee reveal-on-scroll">
+    <div class="editorial-marquee__copy">
+      <p class="editorial-kicker">04 / knowledge</p>
+      <h2>{home.insightsTitle}</h2>
+      <p>{home.insightsBody}</p>
+    </div>
+    <div class="editorial-marquee__rail">
+      {featuredInsights.map((insight) => (
+        <a class="editorial-article-card" href={`/insights/${insight.data.slug}`}>
+          <span>{insight.data.category}</span>
+          <h3>{insight.data.title}</h3>
+          <p>{insight.data.excerpt}</p>
+        </a>
+      ))}
+    </div>
   </section>
 
-  <section class="section">
-    <article class="section-card panel">
-      <p class="eyebrow">Contact</p>
+  <section class="editorial-cta reveal-on-scroll">
+    <div>
+      <p class="editorial-kicker">05 / next step</p>
       <h2>{home.contactTitle}</h2>
       <p>{home.contactBody}</p>
+      <p><strong>Primary market:</strong> {city}, {settings.primaryState || 'Louisiana'}.</p>
+    </div>
+    <div class="editorial-cta__actions">
       <div class="button-row">
         <a class="button" href={settings.bookingUrl} target="_blank" rel="noreferrer">
           Book a Strategy Session
         </a>
         <a class="button button-ghost" href="/contact">Start the intake</a>
       </div>
-    </article>
+    </div>
   </section>
 </BaseLayout>

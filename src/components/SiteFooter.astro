@@ -33,27 +33,34 @@ const coreServices = services.filter((service) => coreServiceSlugs.has(service.d
 ---
 
 <footer class="site-footer">
+  <div class="footer-cta">
+    <p class="footer-kicker">Is it a match?</p>
+    <h2>Let’s shape the version of Cake that feels deliberate at every touchpoint.</h2>
+    <p>
+      Review the work, move through the intake, then use the strategy session to align on scope,
+      systems, and what needs to launch first.
+    </p>
+  </div>
   <div class="footer-grid">
     <div class="footer-column footer-brand-column">
-      <p class="eyebrow">Cake Marketing Collective</p>
+      <p class="footer-heading">explore</p>
       <p class="footer-copy">
         Strategic marketing systems for brands and experiences that need sharper structure,
         stronger visibility, and clearer conversion paths.
       </p>
+      <a class="footer-feature-link" href="/services">See the service stack</a>
     </div>
     <div class="footer-column">
-      <p class="footer-heading">Navigate</p>
+      <p class="footer-heading">navigate</p>
       <div class="footer-link-list">
         {settings.navigation.map((link) => (
           <a href={link.url}>{link.label}</a>
         ))}
         <a href="/insights">Insights</a>
-        <a href="/portal">Client Portal</a>
-        <a href="/studio">Studio</a>
       </div>
     </div>
     <div class="footer-column">
-      <p class="footer-heading">Core Services</p>
+      <p class="footer-heading">core services</p>
       <div class="footer-link-list">
         {coreServices.map((service) => (
           <a href={`/services/${service.data.slug}`}>{service.data.title}</a>
@@ -61,7 +68,7 @@ const coreServices = services.filter((service) => coreServiceSlugs.has(service.d
       </div>
     </div>
     <div class="footer-column">
-      <p class="footer-heading">Contact</p>
+      <p class="footer-heading">say hello</p>
       <div class="footer-link-list">
         <a href={`mailto:${settings.email}`}>{settings.email}</a>
         <a href={settings.bookingUrl} target="_blank" rel="noreferrer">Book strategy session</a>
@@ -71,11 +78,16 @@ const coreServices = services.filter((service) => coreServiceSlugs.has(service.d
       </div>
     </div>
     <div class="footer-column">
-      <p class="footer-heading">Social</p>
+      <p class="footer-heading">stalk us</p>
       <div class="footer-link-list">
         {settings.socialLinks.map((link) => (
           <a href={link.url} target="_blank" rel="noreferrer">{link.label}</a>
         ))}
+      </div>
+      <p class="footer-heading">secure</p>
+      <div class="footer-link-list">
+        <a href="/portal">Client Portal</a>
+        <a href="/studio">Studio</a>
       </div>
     </div>
   </div>

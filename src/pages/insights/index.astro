@@ -15,13 +15,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
   day: 'numeric',
   year: 'numeric',
 });
-const categories = [
-  'Performance Marketing',
-  'SEO',
-  'Brand Strategy',
-  'Experiential',
-  'AI & Automation',
-];
+const archiveLanes = ['All', 'Knowledge', 'Project Stories'];
 ---
 
 <BaseLayout
@@ -34,52 +28,69 @@ const categories = [
   settings={settings}
 >
   <PageHero
-    eyebrow="Insights"
-    title="Expertise published in a format built for search and trust."
-    description="The insights library is designed to support discovery, authority, and sales enablement across the themes clients actually search for."
+    eyebrow="Knowledge"
+    title="A knowledge archive that reads like a point of view, not a content dump."
+    description="This page should feel editorial: clear category rhythm, strong titles, and a flow that moves from thought leadership into an actual next step."
   >
     <Fragment slot="aside">
-      <p class="eyebrow">Editorial lanes</p>
-      <h2>Categories</h2>
-      <ul class="tag-list">
-        {categories.map((category) => (
-          <li class="tag-pill">{category}</li>
-        ))}
-      </ul>
+      <p class="editorial-kicker">Archive lanes</p>
+      <h2>Knowledge first. Project stories when the work needs to speak.</h2>
+      <p>
+        The lane styling is adapted from the reference archive: category-first, text-led, and
+        paced for scanning before clicking.
+      </p>
     </Fragment>
   </PageHero>
 
-  <section class="section">
-    <div class="insight-grid">
-      {insights.map((insight) => (
-        <article class="insight-card panel">
-          <div class="insight-meta">
-            <span class="category-pill">{insight.data.category}</span>
-            <span class="category-pill">{dateFormatter.format(new Date(insight.data.publishDate))}</span>
-          </div>
-          <h3>{insight.data.title}</h3>
-          <p>{insight.data.excerpt}</p>
-          <div class="button-row">
-            <a class="button button-ghost button-small" href={`/insights/${insight.data.slug}`}>
-              Read insight
-            </a>
-          </div>
-        </article>
+  <section class="archive-shell reveal-on-scroll">
+    <div class="archive-filters">
+      {archiveLanes.map((lane, index) => (
+        <span class:list={['archive-filter', index === 1 && 'archive-filter--active']}>{lane}</span>
       ))}
     </div>
-  </section>
-
-  <section class="section">
-    <article class="section-card panel">
-      <p class="eyebrow">Subscribe</p>
-      <h2>Want new insights directly?</h2>
-      <p>
-        Subscription tooling is not live yet, but you can request future updates directly by
-        email until the owned-audience flow expands beyond the current intake system.
-      </p>
-      <a class="button button-ghost" href={`mailto:${settings.email}?subject=Subscribe to Cake insights`}>
-        Request insight updates
-      </a>
-    </article>
+    <div class="archive-list">
+      {insights.map((insight, index) => (
+        <>
+          <article class="archive-entry">
+            <div class="archive-entry__meta">
+              <span>{index === 0 ? 'Knowledge' : 'Project Stories'}</span>
+              <span>{dateFormatter.format(new Date(insight.data.publishDate))}</span>
+            </div>
+            <div class="archive-entry__body">
+              <div>
+                <p class="archive-entry__category">{insight.data.category}</p>
+                <h2>{insight.data.title}</h2>
+              </div>
+              <div>
+                <p>{insight.data.excerpt}</p>
+                <a class="button button-ghost button-small" href={`/insights/${insight.data.slug}`}>
+                  Read story
+                </a>
+              </div>
+            </div>
+          </article>
+          {index === 0 ? (
+            <article class="archive-cta">
+              <div>
+                <p class="editorial-kicker">Need the strategy behind the archive?</p>
+                <h2>Move from reading to relevance.</h2>
+              </div>
+              <div>
+                <p>
+                  The archive should build trust, but the real handoff is still the intake and the
+                  strategy session.
+                </p>
+                <div class="button-row">
+                  <a class="button" href="/contact">Start the intake</a>
+                  <a class="button button-ghost" href={settings.bookingUrl} target="_blank" rel="noreferrer">
+                    Book strategy session
+                  </a>
+                </div>
+              </div>
+            </article>
+          ) : null}
+        </>
+      ))}
+    </div>
   </section>
 </BaseLayout>

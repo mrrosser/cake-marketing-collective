@@ -38,11 +38,11 @@ const schemas = [
 >
   <PageHero
     eyebrow="Services"
-    title="Integrated Marketing Services"
-    description="A service-first system built around performance marketing, brand and web clarity, content, lifecycle support, and experiential execution."
+    title="Integrated marketing services with an editorial pace instead of a menu-board feel."
+    description="The services page is built to move from point of view to fit to next step, with enough detail to qualify the work before the intake begins."
   >
     <Fragment slot="aside">
-      <p class="eyebrow">How engagement starts</p>
+      <p class="editorial-kicker">How engagement starts</p>
       <h2>Start with the bottleneck or rebuild the system around revenue.</h2>
       <p>
         Some brands need sharper paid media. Others need cleaner positioning, stronger web
@@ -52,22 +52,35 @@ const schemas = [
     </Fragment>
   </PageHero>
 
-  <section class="section">
-    <div class="section-intro">
-      <p class="eyebrow">Service hub</p>
+  <section class="editorial-band reveal-on-scroll">
+    <div class="editorial-band__intro">
+      <p class="editorial-kicker">Service hub</p>
       <h2>{`Built for brands in ${city} and beyond that need structure, not noise.`}</h2>
-      <p class="section-lead">
+    </div>
+    <div class="editorial-band__body">
+      <p>
         Every service page is designed to show what the work is, what gets delivered, who it
         fits, and how it connects back to the larger growth system.
       </p>
     </div>
-    <ServiceGrid services={services} />
   </section>
 
   <section class="section">
-    <div class="section-grid">
-      <article class="section-card panel">
-        <p class="eyebrow">Internal linking</p>
+    <ServiceGrid services={services} />
+  </section>
+
+  <section class="editorial-sticky reveal-on-scroll">
+    <div class="editorial-sticky__lead">
+      <p class="editorial-kicker">What the page is doing</p>
+      <h2>Services, proof, and contact are supposed to move as one system.</h2>
+      <p>
+        A buyer should be able to understand what Cake does, what makes the work different, and
+        where to go next without falling into a generic agency grid.
+      </p>
+    </div>
+    <div class="editorial-sticky__stack">
+      <article class="editorial-stack-card">
+        <p class="editorial-stack-card__count">01</p>
         <h2>Services, work, and contact are meant to move together.</h2>
         <p>
           The service hub points deeper into the detailed service pages. Those pages link to
@@ -75,8 +88,8 @@ const schemas = [
           context.
         </p>
       </article>
-      <article class="section-card panel">
-        <p class="eyebrow">Next step</p>
+      <article class="editorial-stack-card">
+        <p class="editorial-stack-card__count">02</p>
         <h2>Use the intake to show where growth is slowing down.</h2>
         <p>
           The intake form captures channel priorities, business context, and timing first. The

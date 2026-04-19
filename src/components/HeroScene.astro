@@ -11,6 +11,10 @@ interface Props {
   scenePath?: string;
   heroImage?: string;
   heroImageAlt?: string;
+  stats?: Array<{
+    label: string;
+    value: string;
+  }>;
 }
 
 const {
@@ -25,6 +29,7 @@ const {
   scenePath = '',
   heroImage = '',
   heroImageAlt = 'Cake Marketing Collective founder portrait',
+  stats = [],
 } = Astro.props;
 
 const hasScene = Boolean(scenePath);
@@ -32,13 +37,13 @@ const hasHeroImage = Boolean(heroImage);
 const primaryExternal = primaryHref.startsWith('http');
 ---
 
-<section class="home-hero">
-  <div class="hero-copy panel">
-    <p class="eyebrow">{eyebrow}</p>
-    <h1>{title}</h1>
-    <p class="hero-subheadline">{subheadline}</p>
-    <p class="hero-body">{copy}</p>
-    <div class="button-row">
+<section class="editorial-hero reveal-on-scroll">
+  <div class="editorial-hero__copy">
+    <p class="editorial-kicker">{eyebrow}</p>
+    <h1 class="editorial-hero__title">{title}</h1>
+    <p class="editorial-hero__subheadline">{subheadline}</p>
+    <p class="editorial-hero__body">{copy}</p>
+    <div class="button-row editorial-hero__actions">
       <a
         class="button"
         href={primaryHref}
@@ -49,15 +54,30 @@ const primaryExternal = primaryHref.startsWith('http');
       </a>
       <a class="button button-ghost" href={secondaryHref}>{secondaryLabel}</a>
     </div>
+    <div class="editorial-hero__notes">
+      <span>Founder-led strategy</span>
+      <span>Culture-aware planning</span>
+      <span>Performance-first systems</span>
+    </div>
   </div>
-  <div class="hero-surface panel">
+  <div class="editorial-hero__media">
     {hasHeroImage ? (
-      <div class="hero-portrait-frame">
-        <img class="hero-portrait" src={heroImage} alt={heroImageAlt} />
+      <div class="editorial-hero__image-frame">
+        <img class="editorial-hero__image" src={heroImage} alt={heroImageAlt} />
+        {stats.length > 0 ? (
+          <div class="editorial-stat-grid">
+            {stats.slice(0, 4).map((stat) => (
+              <div class="editorial-stat-card">
+                <strong>{stat.value}</strong>
+                <span>{stat.label}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
       </div>
     ) : null}
     {hasScene ? (
-      <div class="scene-frame">
+      <div class="editorial-hero__scene">
         <iframe
           src={scenePath}
           title="Cake Marketing Collective hero scene"
@@ -65,12 +85,9 @@ const primaryExternal = primaryHref.startsWith('http');
         />
       </div>
     ) : null}
-    <div class="surface-note">
-      <strong>Built for brands that need structure, clarity, and a system that can scale.</strong>
-      <p>
-        Public intake, strategy routing, and the internal studio are now being shaped as one
-        connected platform instead of separate patched-together tools.
-      </p>
+    <div class="editorial-hero__caption">
+      <strong>Built for brands that need a sharper flow, not more noise.</strong>
+      <p>Every section is meant to feel like a point of view, not a stack of widgets.</p>
     </div>
   </div>
 </section>

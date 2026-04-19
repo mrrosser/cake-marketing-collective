@@ -11,8 +11,10 @@ test('homepage loads with the new architecture navigation', async ({ page }) => 
   await expect(page.getByLabel('Primary').getByRole('link', { name: 'Work' })).toBeVisible();
   await expect(page.getByLabel('Primary').getByRole('link', { name: 'About' })).toBeVisible();
   await expect(page.getByLabel('Primary').getByRole('link', { name: 'Contact' })).toBeVisible();
+  await expect(page.getByLabel('Primary').getByRole('link', { name: 'Knowledge' })).toBeVisible();
   await expect(page.getByRole('banner').getByRole('link', { name: 'Client Portal' })).toBeVisible();
   await expect(page.getByRole('banner').getByRole('link', { name: 'Studio' })).toBeVisible();
+  await expect(page.getByText('01 / point of view')).toBeVisible();
 });
 
 test('footer stacks the revised navigation and social links', async ({ page }) => {
@@ -58,6 +60,12 @@ test('service, case study, and insight detail routes render', async ({ page }) =
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'What Integrated Growth Actually Looks Like for Culture-Led Brands',
   );
+
+  await page.goto('/insights');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(
+    'A knowledge archive that reads like a point of view',
+  );
+  await expect(page.locator('.archive-filter--active')).toContainText('Knowledge');
 });
 
 test('studio and portal routes redirect to secure access when unauthenticated', async ({ page }) => {
