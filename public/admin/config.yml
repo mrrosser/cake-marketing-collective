@@ -178,18 +178,6 @@ collections:
       - { label: "Order", name: "order", widget: "number" }
       - { label: "Body", name: "body", widget: "markdown" }
 
-  - name: "testimonials"
-    label: "Testimonials"
-    folder: "src/content/testimonials"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Quote", name: "quote", widget: "text" }
-      - { label: "Name", name: "name", widget: "string" }
-      - { label: "Role", name: "role", widget: "string" }
-      - { label: "Company", name: "company", widget: "string" }
-      - { label: "Order", name: "order", widget: "number" }
-
   - name: "faqs"
     label: "FAQs"
     folder: "src/content/faqs"

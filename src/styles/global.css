@@ -1117,6 +1117,10 @@ ul {
   gap: 24px;
 }
 
+.platform-page {
+  position: relative;
+}
+
 .platform-hero,
 .app-section--split,
 .intake-shell {
@@ -1134,6 +1138,35 @@ ul {
   max-width: 52rem;
   color: var(--text);
   font-size: 1.08rem;
+}
+
+.platform-metric-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.platform-metric {
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.platform-metric strong {
+  display: block;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.platform-metric span {
+  display: block;
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .app-section {
@@ -1163,14 +1196,24 @@ ul {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   background:
-    radial-gradient(circle at top right, rgba(203, 108, 230, 0.08), transparent 28%),
-    linear-gradient(180deg, rgba(17, 17, 20, 0.96), rgba(8, 8, 11, 0.98));
+    radial-gradient(circle at top right, rgba(244, 122, 84, 0.12), transparent 28%),
+    radial-gradient(circle at left center, rgba(255, 233, 219, 0.05), transparent 32%),
+    linear-gradient(180deg, rgba(21, 17, 15, 0.98), rgba(10, 9, 8, 0.98));
   box-shadow: var(--shadow);
+}
+
+.app-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+  pointer-events: none;
 }
 
 .app-eyebrow {
   margin: 0;
-  color: #ff9bcd;
+  color: var(--secondary);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -1209,6 +1252,22 @@ ul {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.app-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.03);
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.app-link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(244, 122, 84, 0.26);
+}
+
 .app-tag,
 .board-preview__pill,
 .status-pill,
@@ -1240,6 +1299,15 @@ ul {
   width: 64px;
   height: 4px;
   border-radius: 999px;
+}
+
+.board-preview {
+  align-content: start;
+}
+
+.portal-card,
+.auth-card {
+  align-content: start;
 }
 
 .board-preview__header,
@@ -1274,18 +1342,29 @@ ul {
 }
 
 .status-pill--active,
-.status-pill--done {
+.status-pill--done,
+.status-pill--qualified,
+.status-pill--creative-kickoff,
+.status-pill--in-progress,
+.status-pill--in_progress,
+.status-pill--in-review {
   color: #9fe870;
 }
 
 .status-pill--manual-review,
 .status-pill--in_progress,
-.status-pill--in-progress {
+.status-pill--in-progress,
+.status-pill--awaiting-payment,
+.status-pill--awaiting-signature,
+.status-pill--scheduling,
+.status-pill--needs-review {
   color: #f3cc54;
 }
 
 .status-pill--planned,
-.status-pill--queued {
+.status-pill--queued,
+.status-pill--awaiting-footage,
+.status-pill--strategy-session {
   color: var(--text-muted);
 }
 
@@ -1427,6 +1506,10 @@ ul {
 
   .site-nav {
     justify-content: start;
+  }
+
+  .platform-metric-strip {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -4,12 +4,24 @@ interface Props {
   board: WorkspaceBoard;
 }
 
+function toTitleCase(value: string): string {
+  return value
+    .split(/[-_ ]+/)
+    .filter(Boolean)
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join(' ');
+}
+
+function toStatusClass(value: string): string {
+  return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+}
+
 export function BoardPreview({ board }: Props) {
   return (
     <article className="app-card board-preview">
       <div className="board-preview__header">
         <div>
-          <p className="app-eyebrow">{board.workspace}</p>
+          <p className="app-eyebrow">{toTitleCase(board.workspace)}</p>
           <h3>{board.name}</h3>
         </div>
         <span className="board-preview__pill">{board.defaultView}</span>
@@ -22,7 +34,7 @@ export function BoardPreview({ board }: Props) {
               <strong>{item.title}</strong>
               {item.summary ? <p>{item.summary}</p> : null}
             </div>
-            <span>{item.status}</span>
+            <span className={`status-pill status-pill--${toStatusClass(item.status)}`}>{item.status}</span>
           </div>
         ))}
       </div>

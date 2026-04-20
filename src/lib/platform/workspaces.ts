@@ -50,7 +50,7 @@ export const workspaceDefinitions: WorkspaceDefinition[] = [
     key: 'finance',
     label: 'Contracts & Finance',
     shortLabel: 'Finance',
-    description: 'Manual invoices, deposits, contract state, and Stripe-ready placeholders.',
+    description: 'Invoices, deposits, contract state, and payment readiness until live processing is turned on.',
     accent: '#ff9bcd',
     views: ['table', 'timeline'],
     portalVisible: true,

@@ -114,18 +114,6 @@ const caseStudies = defineCollection({
   }),
 });
 
-const testimonials = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/testimonials' }),
-  schema: z.object({
-    quote: z.string(),
-    name: z.string(),
-    role: z.string(),
-    company: z.string(),
-    draft: z.boolean().default(false),
-    order: z.number(),
-  }),
-});
-
 const faqs = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/faqs' }),
   schema: z.object({
@@ -171,7 +159,6 @@ export const collections = {
   founder,
   services,
   caseStudies,
-  testimonials,
   faqs,
   seoDefaults,
   insights,

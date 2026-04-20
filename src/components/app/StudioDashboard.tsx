@@ -21,6 +21,8 @@ export function StudioDashboard({ snapshot }: Props) {
   const activityFeed = snapshot?.activityFeed ?? defaultActivityFeed;
   const automationBlueprints = snapshot?.automationBlueprints ?? defaultAutomationBlueprints;
   const migrationChecklist = snapshot?.migrationChecklist ?? defaultMigrationChecklist;
+  const activeAutomationCount = automationBlueprints.filter((automation) => automation.status === 'active').length;
+  const pendingCheckpointCount = migrationChecklist.filter((checkpoint) => checkpoint.status !== 'done').length;
 
   return (
     <div className="platform-page">
@@ -29,13 +31,27 @@ export function StudioDashboard({ snapshot }: Props) {
           <p className="app-eyebrow">Studio</p>
           <h1>{viewer?.organizationId ? studioUser.organization : studioUser.organization}</h1>
           <p className="platform-hero__copy">
-            A single branded operating system for intake, CRM, delivery, design, research, billing,
-            and team ops. Monday becomes migration-only. Cake becomes the source of truth.
+            Internal command for intake, CRM, delivery, design, finance, and operator follow-through.
+            The goal is one working system that keeps the brand side and the business side moving together.
           </p>
           <div className="app-tag-row">
             <span className="app-tag">Owner: {viewer?.name ?? studioUser.name}</span>
             <span className="app-tag">Role: {viewer?.role ?? studioUser.role}</span>
-            <span className="app-tag">Cutover mode: freeze + delta import</span>
+            <span className="app-tag">Ops mode: controlled cutover</span>
+          </div>
+          <div className="platform-metric-strip">
+            <div className="platform-metric">
+              <strong>{boards.length}</strong>
+              <span>live boards</span>
+            </div>
+            <div className="platform-metric">
+              <strong>{activeAutomationCount}</strong>
+              <span>active automations</span>
+            </div>
+            <div className="platform-metric">
+              <strong>{pendingCheckpointCount}</strong>
+              <span>cutover checks open</span>
+            </div>
           </div>
         </div>
         <AuthStatusCard viewer={viewer ?? null} />
@@ -44,8 +60,8 @@ export function StudioDashboard({ snapshot }: Props) {
       <section className="app-section">
         <div className="section-heading">
           <div>
-            <p className="app-eyebrow">Workspace Stack</p>
-            <h2>Every launch workspace is mapped and branded.</h2>
+            <p className="app-eyebrow">Operating Lanes</p>
+            <h2>Every lane has a job, an owner, and a clear view of the work.</h2>
           </div>
         </div>
         <div className="workspace-grid">
@@ -70,8 +86,8 @@ export function StudioDashboard({ snapshot }: Props) {
       <section className="app-section">
         <div className="section-heading">
           <div>
-            <p className="app-eyebrow">Boards</p>
-            <h2>The CRM ships with working board primitives instead of placeholder SaaS chrome.</h2>
+            <p className="app-eyebrow">Live Boards</p>
+            <h2>The day-to-day work lives here, not in a generic dashboard shell.</h2>
           </div>
         </div>
         <div className="workspace-grid">
@@ -83,8 +99,8 @@ export function StudioDashboard({ snapshot }: Props) {
 
       <section className="app-section app-section--split">
         <article className="app-card">
-          <p className="app-eyebrow">Automation Layer</p>
-          <h3>Required launch automations</h3>
+          <p className="app-eyebrow">Automation Watch</p>
+          <h3>Core flows that keep intake, research, and delivery moving.</h3>
           <div className="stack-list">
             {automationBlueprints.map((automation) => (
               <div className="stack-list__item" key={automation.id}>
@@ -101,8 +117,8 @@ export function StudioDashboard({ snapshot }: Props) {
         </article>
 
         <article className="app-card">
-          <p className="app-eyebrow">Cutover</p>
-          <h3>Monday migration checkpoints</h3>
+          <p className="app-eyebrow">Migration Control</p>
+          <h3>Cutover checkpoints for the Monday exit.</h3>
           <div className="stack-list">
             {migrationChecklist.map((checkpoint) => (
               <div className="stack-list__item" key={checkpoint.id}>
@@ -121,8 +137,8 @@ export function StudioDashboard({ snapshot }: Props) {
 
       <section className="app-section">
         <article className="app-card">
-          <p className="app-eyebrow">Live Activity</p>
-          <h3>Supervised automation, no silent failures.</h3>
+          <p className="app-eyebrow">Operator Feed</p>
+          <h3>Recent movement across leads, design, and ops.</h3>
           <div className="activity-list">
             {activityFeed.map((entry) => (
               <div className="activity-list__item" key={entry.id}>

@@ -11,7 +11,6 @@ interface FooterSettings {
   siteName: string;
   email: string;
   bookingUrl: string;
-  formUrl?: string;
   socialLinks: NavLink[];
   navigation: NavLink[];
 }
@@ -48,7 +47,7 @@ const coreServices = services.filter((service) => coreServiceSlugs.has(service.d
         Strategic marketing systems for brands and experiences that need sharper structure,
         stronger visibility, and clearer conversion paths.
       </p>
-      <a class="footer-feature-link" href="/services">See the service stack</a>
+      <a class="footer-feature-link" href="/services">Explore services</a>
     </div>
     <div class="footer-column">
       <p class="footer-heading">navigate</p>
@@ -68,23 +67,21 @@ const coreServices = services.filter((service) => coreServiceSlugs.has(service.d
       </div>
     </div>
     <div class="footer-column">
-      <p class="footer-heading">say hello</p>
+      <p class="footer-heading">connect</p>
       <div class="footer-link-list">
         <a href={`mailto:${settings.email}`}>{settings.email}</a>
         <a href={settings.bookingUrl} target="_blank" rel="noreferrer">Book strategy session</a>
-        {settings.formUrl && (
-          <a href={settings.formUrl} target="_blank" rel="noreferrer">Open intake form</a>
-        )}
+        <a href="/contact">Start the intake</a>
       </div>
     </div>
     <div class="footer-column">
-      <p class="footer-heading">stalk us</p>
+      <p class="footer-heading">follow</p>
       <div class="footer-link-list">
         {settings.socialLinks.map((link) => (
           <a href={link.url} target="_blank" rel="noreferrer">{link.label}</a>
         ))}
       </div>
-      <p class="footer-heading">secure</p>
+      <p class="footer-heading">access</p>
       <div class="footer-link-list">
         <a href="/portal">Client Portal</a>
         <a href="/studio">Studio</a>

@@ -15,7 +15,7 @@ export const studioUser: AppShellUser = {
 };
 
 export const portalUser: AppShellUser = {
-  name: 'Studio Client',
+  name: 'Invited Client',
   email: 'client@example.com',
   role: 'client',
   organization: 'Cake Marketing Collective',
@@ -42,7 +42,7 @@ export const workspaceBoards: WorkspaceBoard[] = [
         assignee: 'Cake',
         dueDate: '2026-04-19',
         relation: 'The Culturalyst',
-        summary: 'Discovery call approved. Stitch draft and research loop queued.',
+        summary: 'Discovery call approved. Creative planning and research follow-up are in motion.',
         tags: ['brand', 'design-trigger'],
       },
       {
@@ -82,7 +82,7 @@ export const workspaceBoards: WorkspaceBoard[] = [
       {
         id: 'delivery-002',
         title: 'Portal launch assets',
-        status: 'Needs approval',
+        status: 'In review',
         assignee: 'Client success',
         relation: 'The Culturalyst',
         timeline: { start: '2026-04-24', end: '2026-05-08' },
@@ -106,7 +106,7 @@ export const workspaceBoards: WorkspaceBoard[] = [
       {
         id: 'calendar-001',
         title: 'Knowledge article: Culture-backed strategy',
-        status: 'Drafting',
+        status: 'In progress',
         assignee: 'Content',
         dueDate: '2026-04-25',
         relation: 'Cake Marketing',
@@ -137,7 +137,7 @@ export const workspaceBoards: WorkspaceBoard[] = [
       {
         id: 'design-001',
         title: 'Culturalyst brand system sprint',
-        status: 'Stitch ready',
+        status: 'Creative kickoff',
         assignee: 'Design',
         relation: 'The Culturalyst',
         metric: 'Founder-led editorial system',
@@ -176,7 +176,7 @@ export const workspaceBoards: WorkspaceBoard[] = [
       {
         id: 'research-002',
         title: 'Competitive language scrape',
-        status: 'Manual review',
+        status: 'Needs review',
         assignee: 'Research',
         relation: 'Cake Marketing',
         metric: '6 sources flagged',
@@ -207,10 +207,10 @@ export const workspaceBoards: WorkspaceBoard[] = [
       {
         id: 'finance-002',
         title: 'Master service agreement',
-        status: 'Needs signature',
+        status: 'Awaiting signature',
         assignee: 'Ops',
         relation: 'The Culturalyst',
-        metric: 'Draft v2',
+        metric: 'Revision 2',
       },
     ],
   },
@@ -264,7 +264,7 @@ export const portalProjects: ClientPortalProject[] = [
     id: 'portal-002',
     clientName: 'LinkFest',
     projectName: 'Experiential relaunch planning',
-    status: 'Needs strategy session',
+    status: 'Scheduling',
     milestone: 'Deposit and schedule',
     nextReview: '2026-04-20',
     sharedLinks: [
@@ -285,8 +285,8 @@ export const activityFeed: ActivityEvent[] = [
   {
     id: 'activity-002',
     actor: 'System',
-    action: 'Stitch draft prepared',
-    detail: 'Creative strategy intake triggered a draft design workspace.',
+    action: 'Creative workspace prepared',
+    detail: 'A new design planning space was opened from intake responses.',
     timestamp: '2026-04-17T16:22:00Z',
   },
   {
@@ -316,7 +316,7 @@ export const automationBlueprints: AutomationBlueprint[] = [
   {
     id: 'automation-003',
     name: 'Stitch workspace scaffolding',
-    summary: 'Create design-ready project scaffolds when creative need is detected.',
+    summary: 'Create project-ready design spaces when creative need is detected.',
     status: 'manual-review',
     category: 'design',
   },

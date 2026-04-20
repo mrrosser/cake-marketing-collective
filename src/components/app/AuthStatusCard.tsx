@@ -19,22 +19,22 @@ interface Props {
 export function AuthStatusCard({
   nextPath = '/studio',
   viewer = null,
-  heading = 'Google auth is wired into the platform surface.',
-  description = 'Use an allowlisted account to create a secure Cake platform session.',
+  heading = 'Secure Google sign-in for the private Cake workspace.',
+  description = 'Use an allowlisted account to enter the internal workspace or client-safe portal.',
 }: Props) {
   const services = useMemo(() => getFirebaseClientServices(), []);
   const [status, setStatus] = useState<string>(
     viewer
       ? `Signed in as ${viewer.email} (${viewer.role}).`
       : services
-        ? 'Firebase client is ready for Google sign-in.'
-        : 'Firebase client config is not wired yet.',
+        ? 'Google sign-in is available for allowlisted accounts.'
+        : 'Firebase public auth config is not connected yet.',
   );
   const [busy, setBusy] = useState(false);
 
   async function handleSignIn() {
     if (!services) {
-      setStatus('Connect Firebase public config before testing live auth.');
+      setStatus('Connect Firebase public auth config before testing live sign-in.');
       return;
     }
 
