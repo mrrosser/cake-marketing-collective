@@ -15,6 +15,8 @@ test('homepage loads with the new architecture navigation', async ({ page }) => 
   await expect(page.getByRole('banner').getByRole('link', { name: 'Client Portal' })).toBeVisible();
   await expect(page.getByRole('banner').getByRole('link', { name: 'Studio' })).toBeVisible();
   await expect(page.getByText('01 / point of view')).toBeVisible();
+  await expect(page.locator('iframe[title=\"Cake Marketing Collective hero scene\"]')).toHaveCount(0);
+  await expect(page.getByText(/placeholder/i)).toHaveCount(0);
 });
 
 test('footer stacks the revised navigation and social links', async ({ page }) => {
@@ -63,9 +65,19 @@ test('service, case study, and insight detail routes render', async ({ page }) =
 
   await page.goto('/insights');
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'A knowledge archive that reads like a point of view',
+    'A knowledge archive built around strategy, perspective, and practical next moves.',
   );
   await expect(page.locator('.archive-filter--active')).toContainText('Knowledge');
+});
+
+test('legal pages no longer expose placeholder copy', async ({ page }) => {
+  await page.goto('/privacy');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Privacy Policy');
+  await expect(page.getByText(/placeholder/i)).toHaveCount(0);
+
+  await page.goto('/terms');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Terms of Use');
+  await expect(page.getByText(/placeholder/i)).toHaveCount(0);
 });
 
 test('studio and portal routes redirect to secure access when unauthenticated', async ({ page }) => {

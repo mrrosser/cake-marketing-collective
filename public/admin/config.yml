@@ -37,7 +37,6 @@ collections:
           - { label: "Primary City", name: "primaryCity", widget: "string", required: false }
           - { label: "Primary State", name: "primaryState", widget: "string", required: false }
           - { label: "Service Area", name: "serviceArea", widget: "string", required: false }
-          - { label: "Spline Scene Path", name: "splineScenePath", widget: "string", required: false }
           - label: "Navigation"
             name: "navigation"
             widget: "list"

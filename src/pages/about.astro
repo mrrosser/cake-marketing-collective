@@ -60,7 +60,7 @@ const schemas = [
         <p class="eyebrow">Philosophy</p>
         <h2>What shapes the work.</h2>
         <p>{founder.philosophy}</p>
-        <p>{founder.photoCredit ? `Photo credit: ${founder.photoCredit}` : 'Founder image pending update.'}</p>
+        {founder.photoCredit ? <p>{`Photo credit: ${founder.photoCredit}`}</p> : null}
       </article>
     </div>
   </section>

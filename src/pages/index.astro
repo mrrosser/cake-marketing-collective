@@ -65,7 +65,6 @@ const schemas = [
     primaryHref={settings.primaryCtaHref}
     secondaryLabel={settings.secondaryCtaLabel}
     secondaryHref={settings.secondaryCtaHref}
-    scenePath={settings.splineScenePath}
     heroImage={founder.image}
     heroImageAlt={`Portrait of ${founder.name}`}
     stats={settings.stats}
@@ -116,22 +115,22 @@ const schemas = [
       <h2>{home.caseStudiesTitle}</h2>
       <p>{home.caseStudiesBody}</p>
       <p>
-        The public site should feel like the first chapter of a working relationship:
-        calm, assured, visual, and already moving toward the next decision.
+        The work should make the standard clear quickly: thoughtful strategy, strong taste,
+        and execution that can hold up once attention turns into action.
       </p>
-        {featuredCase ? (
-          <>
+      {featuredCase ? (
+        <>
           <div class="editorial-showcase__feature">
             <span>{featuredCase.data.title}</span>
             <p>{featuredCase.data.summary}</p>
           </div>
-            <div class="button-row">
-              <a class="button button-ghost" href="/work">
-                View Work
-              </a>
-            </div>
-          </>
-        ) : null}
+          <div class="button-row">
+            <a class="button button-ghost" href="/work">
+              View Work
+            </a>
+          </div>
+        </>
+      ) : null}
       <div class="button-row">
         <a class="button button-ghost" href="/about">About Cake</a>
       </div>

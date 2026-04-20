@@ -8,7 +8,6 @@ interface Props {
   primaryHref: string;
   secondaryLabel: string;
   secondaryHref: string;
-  scenePath?: string;
   heroImage?: string;
   heroImageAlt?: string;
   stats?: Array<{
@@ -26,13 +25,11 @@ const {
   primaryHref,
   secondaryLabel,
   secondaryHref,
-  scenePath = '',
   heroImage = '',
   heroImageAlt = 'Cake Marketing Collective founder portrait',
   stats = [],
 } = Astro.props;
 
-const hasScene = Boolean(scenePath);
 const hasHeroImage = Boolean(heroImage);
 const primaryExternal = primaryHref.startsWith('http');
 ---
@@ -76,18 +73,9 @@ const primaryExternal = primaryHref.startsWith('http');
         ) : null}
       </div>
     ) : null}
-    {hasScene ? (
-      <div class="editorial-hero__scene">
-        <iframe
-          src={scenePath}
-          title="Cake Marketing Collective hero scene"
-          loading="lazy"
-        />
-      </div>
-    ) : null}
     <div class="editorial-hero__caption">
-      <strong>Built for brands that need a sharper flow, not more noise.</strong>
-      <p>Every section is meant to feel like a point of view, not a stack of widgets.</p>
+      <strong>Built for brands that need sharper structure, not more noise.</strong>
+      <p>Every section is designed to feel intentional, editorial, and ready to move.</p>
     </div>
   </div>
 </section>

@@ -31,7 +31,6 @@ const siteSettings = defineCollection({
     primaryCity: z.string().optional().default(''),
     primaryState: z.string().optional().default(''),
     serviceArea: z.string().optional().default(''),
-    splineScenePath: z.string().optional().default(''),
     navigation: z.array(navLinkSchema),
     socialLinks: z.array(navLinkSchema),
     stats: z.array(statSchema),

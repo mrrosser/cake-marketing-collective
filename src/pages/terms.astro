@@ -6,7 +6,7 @@ import { buildOrganizationSchema, withTitleTemplate } from '../lib/seo';
 const settings = (await getSingleton('siteSettings')).data;
 const seo = (await getSingleton('seoDefaults')).data;
 const title = withTitleTemplate('Terms', seo.titleTemplate);
-const description = 'Placeholder terms for Cake Marketing Collective pending final legal copy.';
+const description = 'Terms governing use of the Cake Marketing Collective website and inquiry flows.';
 const schemas = [buildOrganizationSchema(settings)];
 ---
 
@@ -20,13 +20,46 @@ const schemas = [buildOrganizationSchema(settings)];
   settings={settings}
 >
   <section class="section">
-    <div class="section-card">
+    <div class="section-card panel">
       <p class="eyebrow">Terms</p>
-      <h1>Terms placeholder</h1>
+      <h1>Terms of Use</h1>
       <p>
-        Final terms and conditions are still pending. Replace this page with approved language
-        before production launch, especially if client work, deposits, scheduling, or digital
-        deliverables are governed through the website.
+        By using this website, you agree to use it lawfully and only for legitimate business,
+        informational, or inquiry purposes related to Cake Marketing Collective.
+      </p>
+      <h2>Website content</h2>
+      <p>
+        Unless otherwise stated, the content on this site, including copy, branding, layout,
+        imagery, and strategy materials, belongs to Cake Marketing Collective and may not be
+        reproduced without permission.
+      </p>
+      <h2>Inquiries and project discussions</h2>
+      <p>
+        Submitting an intake form, booking request, or message through the site does not create a
+        client relationship on its own. Any active engagement, scope, fee, deposit, or deliverable
+        terms are governed separately through direct agreement or invoicing.
+      </p>
+      <h2>Third-party services</h2>
+      <p>
+        This site may link to third-party platforms for scheduling, communication, payments, or
+        other operational support. Cake Marketing Collective is not responsible for the content,
+        policies, or service interruptions of third-party platforms.
+      </p>
+      <h2>Availability and updates</h2>
+      <p>
+        We may update, suspend, or change parts of the site at any time without notice. We make
+        reasonable efforts to keep information accurate, but do not guarantee that all site content
+        is complete, current, or error-free at every moment.
+      </p>
+      <h2>Limitation of liability</h2>
+      <p>
+        To the fullest extent allowed by law, Cake Marketing Collective is not liable for damages
+        arising from use of this website, inability to access the site, or reliance on website
+        content before a formal working agreement is in place.
+      </p>
+      <h2>Contact</h2>
+      <p>
+        Questions about these terms can be sent to <a href={`mailto:${settings.email}`}>{settings.email}</a>.
       </p>
     </div>
   </section>

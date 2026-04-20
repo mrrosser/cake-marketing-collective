@@ -15,7 +15,6 @@ address: ""
 primaryCity: Shreveport
 primaryState: Louisiana
 serviceArea: Shreveport, Louisiana and growth-minded brands nationwide
-splineScenePath: /spline/hero-scene.html
 navigation:
   - label: Home
     url: /

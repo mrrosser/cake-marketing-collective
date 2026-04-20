@@ -410,20 +410,6 @@ ul {
   text-transform: uppercase;
 }
 
-.editorial-hero__scene {
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 20px;
-  min-height: 180px;
-  opacity: 0.76;
-}
-
-.editorial-hero__scene iframe {
-  width: 100%;
-  min-height: 180px;
-  border: 0;
-}
-
 .editorial-hero__caption {
   display: grid;
   gap: 10px;
@@ -820,14 +806,6 @@ ul {
   text-transform: uppercase;
 }
 
-.scene-frame {
-  margin-top: 18px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: #0a0a0c;
-}
-
 .hero-portrait-frame {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -842,12 +820,6 @@ ul {
   max-height: 580px;
   object-fit: cover;
   object-position: center top;
-}
-
-.scene-frame iframe {
-  width: 100%;
-  min-height: 240px;
-  border: 0;
 }
 
 .surface-note {

@@ -6,7 +6,7 @@ import { buildOrganizationSchema, withTitleTemplate } from '../lib/seo';
 const settings = (await getSingleton('siteSettings')).data;
 const seo = (await getSingleton('seoDefaults')).data;
 const title = withTitleTemplate('Privacy', seo.titleTemplate);
-const description = 'Placeholder privacy policy for Cake Marketing Collective pending final legal copy.';
+const description = 'Privacy information for Cake Marketing Collective website visitors, leads, and clients.';
 const schemas = [buildOrganizationSchema(settings)];
 ---
 
@@ -20,13 +20,48 @@ const schemas = [buildOrganizationSchema(settings)];
   settings={settings}
 >
   <section class="section">
-    <div class="section-card">
+    <div class="section-card panel">
       <p class="eyebrow">Privacy</p>
-      <h1>Privacy policy placeholder</h1>
+      <h1>Privacy Policy</h1>
       <p>
-        Final privacy policy copy is still pending. Before launch, replace this placeholder with
-        the approved policy covering site analytics, intake forms, email communication, and any
-        third-party services used on the production site.
+        Cake Marketing Collective respects your privacy. This policy explains what information we
+        collect through this website, how we use it, and how to contact us with questions about
+        your data.
+      </p>
+      <h2>Information we collect</h2>
+      <p>
+        We may collect information you provide directly, including your name, email address,
+        phone number, business details, social handles, and any project information submitted
+        through the intake or contact flow.
+      </p>
+      <h2>How we use information</h2>
+      <p>
+        Information submitted through the site is used to respond to inquiries, qualify leads,
+        schedule calls, deliver services, improve operations, and maintain internal records tied
+        to client work and follow-up.
+      </p>
+      <h2>Analytics and service providers</h2>
+      <p>
+        The site may use analytics, hosting, scheduling, and workflow tools to understand site
+        usage and support intake processing. Those providers only receive the information needed
+        to operate their part of the service.
+      </p>
+      <h2>Sharing and retention</h2>
+      <p>
+        Cake Marketing Collective does not sell your personal information. Information may be
+        shared with trusted service providers or professional partners only when necessary to
+        operate the website, manage inquiries, or deliver contracted work. We retain information
+        for as long as needed for business, legal, and operational purposes.
+      </p>
+      <h2>Your choices</h2>
+      <p>
+        You may request access, correction, or deletion of the personal information you have
+        submitted through this site, subject to any business or legal obligations that require
+        retention.
+      </p>
+      <h2>Contact</h2>
+      <p>
+        For privacy questions, email <a href={`mailto:${settings.email}`}>{settings.email}</a>.
       </p>
     </div>
   </section>
